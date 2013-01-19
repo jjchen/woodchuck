@@ -97,12 +97,12 @@ public class ReadingServlet extends HttpServlet {
 						readChannel, "UTF8"));
 
 				String line = reader.readLine();
-				String[] line_arr = line.split("\\. ");
 				String data = "";
 
 				int sentence = 0;
 				while (line != null) {
 					int i = 0;
+					String[] line_arr = line.split("\\. ");
 					while (i < line_arr.length) {
 						data += line_arr[i];
 						if (line_arr[i].charAt(line_arr[i].length() - 1) == '.') {
@@ -117,7 +117,6 @@ public class ReadingServlet extends HttpServlet {
 						i++;
 					}
 					line = reader.readLine();
-					line_arr = line.split("\\. ");
 				}
 
 				if (data.equals("")) {
