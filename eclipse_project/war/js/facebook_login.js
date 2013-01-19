@@ -41,7 +41,6 @@ window.fbAsyncInit = function() {
             }).done(function (msg) {
                 console.log(msg);
             });
-
   
         } else if (response.status === 'not_authorized') {
             // not_authorized
