@@ -69,7 +69,7 @@
 				<input type="filepicker" class="filepicker_button" data-fp-apikey="ArDRHUpYoQQ6Yg5Qsmoxbz"
 					data-fp-mimetypes="text/*,application/pdf"
 					data-fp-container="modal" data-fp-multiple="true"
-					data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE"
+					data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL"
 					onchange="filePickerResp(event)" />
 				Or, <a href="#">specify a link</a>.
 			</div>
