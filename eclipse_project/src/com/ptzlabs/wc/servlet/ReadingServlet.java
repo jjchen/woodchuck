@@ -109,13 +109,13 @@ public class ReadingServlet extends HttpServlet {
 				String data = "";
 
 				int sentence = 0;
-
+				int endSentence = 0;
 				int chunkCounter = 1;
 				int fromIndex = 0;
 				while (line != null) {
 					int i = 0;
-					int endSentence = line.indexOf(". ", fromIndex);
-					while (endSentence != -1) {
+					endSentence = line.indexOf(". ", fromIndex);
+					while (endSentence >= 0) {
 						data += line.substring(fromIndex, endSentence);
 						sentence++;
 						if (sentence == 2) {
