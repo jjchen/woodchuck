@@ -48,8 +48,7 @@
 				filename : true,
 				mimetype : true
 			}, function(metadata) {
-				var obj = JSON.parse(metadata);
-				sendLink(event.fpfiles[i].url, obj.filename, obj.mimetype);
+				sendLink(event.fpfiles[i].url, metadata.filename, metadata.mimetype);
 			});
 			out += event.fpfiles[i].url;
 			out += ' ';
@@ -71,7 +70,7 @@
 					data-fp-mimetypes="text/*,application/pdf"
 					data-fp-container="modal" data-fp-multiple="true"
 					data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE"
-					onchange="filePickerResp()" />
+					onchange="filePickerResp(event)" />
 				Or, <a href="#">specify a link</a>.
 			</div>
 			<h2>Start Reading.</h2>
