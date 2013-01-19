@@ -4,8 +4,6 @@
  * additional javascript functions for the facebook login stuff
  */
 
-
-
 // Additional JS functions here
 window.fbAsyncInit = function() {
     FB.init({
@@ -33,8 +31,18 @@ window.fbAsyncInit = function() {
               }
              ******/
 
-            alert("hi");
-            alert(response.authResponse.userID);
+            $.ajax({
+                type: "POST",
+                url: "/login.html",
+                date: {
+                    userID: response.authResponse.userID,
+                    accessToken: response.authResponse.accessToken
+                }
+            }).done(function (msg) {
+                alert("hi all done");
+            });
+
+  
         } else if (response.status === 'not_authorized') {
             // not_authorized
             login();
