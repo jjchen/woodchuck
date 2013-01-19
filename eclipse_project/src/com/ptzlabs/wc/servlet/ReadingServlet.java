@@ -157,40 +157,30 @@ public class ReadingServlet extends HttpServlet {
 	}
 
 	private static AppEngineFile readFileAndStore(String location) throws IOException {
-			// Get a file service
-			FileService fileService = FileServiceFactory.getFileService();
+		BufferedReader reader;
+		FileService fileService = FileServiceFactory.getFileService();
+		AppEngineFile file = fileService.createNewBlobFile("text/plain");
+		FileWriteChannel writeChannel = fileService.openWriteChannel(file, true);
 
-			// Create a new Blob file with mime-type "text/plain"
-			AppEngineFile file = fileService.createNewBlobFile("text/plain");
+		reader = new BufferedReader(new InputStreamReader(
+				new URL(location).openStream()));
 
-			// Open a channel to write to it
-			FileWriteChannel writeChannel = fileService.openWriteChannel(file, true);
+		String line;
+		while ((line = reader.readLine()) != null) {
+			writeChannel.write(ByteBuffer.wrap(line.getBytes()));
+		}
+		reader.close();
+		writeChannel.closeFinally();
 
-			BufferedReader reader;
-
-			// InputStream in = new BufferedInputStream(new
-			// URL(location).openStream());
-			reader = new BufferedReader(new InputStreamReader(
-					new URL(location).openStream()));
-
-			String line;
-			while ((line = reader.readLine()) != null) {
-				writeChannel.write(ByteBuffer.wrap(line.getBytes()));
-			}
-			reader.close();
-			/*
-			 * byte data[] = new byte[1024]; int count; while ((count =
-			 * in.read(data, 0, 1024)) != -1) {
-			 * writeChannel.write(ByteBuffer.wrap(data)); } if (in != null)
-			 * in.close();
-			 */
-			writeChannel.closeFinally();
-
-			return file;
+		return file;
 	}
 	
 	public static List<Reading> getReadings(long fbid) {
 		User user = User.getUser(fbid);
 		return ofy().load().type(Reading.class).filter("user", user.id).list();
+	}
+	
+	public static Reading get(long id) {
+		return ofy().load().type(Reading.class).id(id).get();
 	}
 }
