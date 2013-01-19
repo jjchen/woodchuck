@@ -2,9 +2,9 @@ package com.ptzlabs.wc.servlet;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Date;
@@ -42,7 +42,7 @@ public class ReadingServlet extends HttpServlet {
 
 			ofy().save().entity(reading).now();
 			
-			BlobKey bk = readFileAndStore(req.getParameter("location"));
+			AppEngineFile file = readFileAndStore(req.getParameter("location"));
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 			
 			
@@ -86,6 +86,12 @@ public class ReadingServlet extends HttpServlet {
 
 			readChannel.close();
 			// TODO: remove from blobstore
+			
+			BlobKey blobKey = fileService.getBlobKey(file);
+  			BlobstoreService blobStoreService = BlobstoreServiceFactory.getBlobstoreService();
+  			
+  			blobStoreService.delete(blobKey);
+			 
 			*/
 
 			resp.setContentType("text/plain");
@@ -93,7 +99,7 @@ public class ReadingServlet extends HttpServlet {
 		}
 	}
 
-	private static BlobKey readFileAndStore(String location) {
+	private static AppEngineFile readFileAndStore(String location) {
 		try {
 			// Get a file service
 			FileService fileService = FileServiceFactory.getFileService();
@@ -105,17 +111,26 @@ public class ReadingServlet extends HttpServlet {
 			boolean lock = false;
 			FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
 
-			InputStream in = new BufferedInputStream(new URL(location).openStream());
+			// InputStream in = new BufferedInputStream(new URL(location).openStream());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					new URL(location).openStream()));
 
-			byte data[] = new byte[1024];
+			String line;
+			while ((line = reader.readLine()) != null) {
+				writeChannel.write(ByteBuffer.wrap(line.getBytes()));
+            }
+			reader.close();
+			/*
+			 * byte data[] = new byte[1024];
 			int count;
 			while ((count = in.read(data, 0, 1024)) != -1) {
 				writeChannel.write(ByteBuffer.wrap(data));
 			}
 			if (in != null) in.close();
+			*/
 			writeChannel.closeFinally();
 			
-			return fileService.getBlobKey(file);
+			return file;
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
