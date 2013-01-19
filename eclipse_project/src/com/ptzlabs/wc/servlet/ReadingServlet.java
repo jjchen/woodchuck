@@ -100,26 +100,27 @@ public class ReadingServlet extends HttpServlet {
 				String data = "";
 
 				int sentence = 0;
+				int fromIndex = 0;
 				while (line != null) {
 					int i = 0;
-					String[] line_arr = line.split("\\. ");
-					while (i < line_arr.length) {
-						data += line_arr[i];
-						if (line_arr[i].charAt(line_arr[i].length() - 1) == '.') {
-							sentence++;
-							if (sentence == 2) {
-								Chunk chunk = new Chunk(readingKey, data);
-								ofy().save().entity(chunk).now();
-								sentence = 0;
-								data = "";
-							}
+					int endSentence = line.indexOf(". ", fromIndex);
+					while (endSentence != -1) {
+						data += line.subString(fromIndex, endSentence);
+						sentence++;
+						if (sentence == 2) {
+							Chunk chunk = new Chunk(readingKey, data);
+							ofy().save().entity(chunk).now();
+							sentence = 0;
+							data = "";
 						}
-						i++;
+						fromIndex = endSentence;
 					}
+					
+					data += line.subString(fromIndex, sentence.length);
 					line = reader.readLine();
 				}
 
-				if (data.equals("")) {
+				if (sentence != 0) {
 					Chunk chunk = new Chunk(readingKey, data);
 					ofy().save().entity(chunk).now();
 				}
