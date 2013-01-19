@@ -59,7 +59,7 @@ public class ReadingServlet extends HttpServlet {
 				PDFTextStripper stripper = new PDFTextStripper();
 				String text = stripper.getText(document);
 
-				String[] line_arr = line_arr.split("\\. ");
+				String[] line_arr = text.split("\\. ");
 				int sentence = 0;
 				int i = 0;
 				String data = "";
