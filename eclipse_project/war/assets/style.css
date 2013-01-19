@@ -10,9 +10,85 @@ html, body {
 h1 {
 	font-family: "Oswald";
 	margin: 20px 0px;
+	text-align: left;
+	font-weight: 400;
+}
+
+h2 {
+	font-family: "Oswald";
+	margin: 10px 0px;
+	font-size: 25px;
+	font-weight: 400;
+	text-transform: uppercase;
+	color: #B36800;
 }
 
 div#container {
 	width: 900px;
 	margin: 0 auto;
+}
+
+#wrapper {
+	background: rgba(255, 255, 255, 0.85);
+	text-align: left;
+	padding: 20px;
+	border: 1px solid #999;
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	
+	color: #333;
+}
+
+#wrapper p {
+	font-size: 15px;
+	line-height: 20px;	
+}
+
+div.filepicker_form {
+	background: #EDCC9F;
+	padding: 10px;
+	border: 1px #E69A30 solid;
+	margin-left: 10px;
+	font-size: 13px;
+}
+
+button.filepicker_button {
+	padding: 30px 10px;
+	background-color: #ee432e;
+	background-image: -webkit-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: -moz-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: -ms-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: -o-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	border: 1px solid #593503;
+	/* border-radius: 5px; */
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4), 0 1px 3px #333333;
+	box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4), 0 1px 3px #333333;
+	color: #fff;
+	font: 20px/1 "Oswald";
+	padding: 12px 0 14px 0;
+	text-align: center;
+	text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+	width: 200px;
+	display: block;
+	margin-bottom: 5px;
+	
+	-webkit-transition: 0.2s opacity;
+}
+
+button.filepicker_button:hover {
+	opacity: 0.8;
+}
+
+a {
+	color: #B36800;
+	text-decoration: none;
+}
+
+.right {
+	float: right;
+}
+
+.clear {
+	clear: both;
 }
