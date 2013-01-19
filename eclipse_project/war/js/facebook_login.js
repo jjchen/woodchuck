@@ -39,8 +39,10 @@ window.fbAsyncInit = function() {
                     access_token: response.authResponse.accessToken
                 }
             }).done(function (msg) {
-                console.log(msg);
+                console.log("hello" + msg);
             });
+            
+            var fbid = response.authResponse.userID;
   
         } else if (response.status === 'not_authorized') {
             // not_authorized
@@ -61,3 +63,13 @@ window.fbAsyncInit = function() {
     js.src = "//connect.facebook.net/en_US/all.js";
     ref.parentNode.insertBefore(js, ref);
 }(document));
+
+function login() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            // connected
+        } else {
+            // cancelled
+        }
+    }, {scope: 'email, publish_stream'});
+}

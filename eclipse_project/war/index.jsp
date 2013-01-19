@@ -9,15 +9,6 @@
 	<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
 	<script type="text/javascript" src="js/facebook_login.js"></script>
 	<script type="text/javascript">
-        function login() {
-            FB.login(function(response) {
-                if (response.authResponse) {
-                    // connected
-                } else {
-                    // cancelled
-                }
-            }, {scope: 'email, publish_stream'});
-        }
         function sendLink(url) {
         	var xmlhttp;
         	if (window.XMLHttpRequest)
@@ -28,7 +19,7 @@
         	}
         	xmlhttp.open("POST", "", true);
         	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        	xmlhttp.send("mode=new&name="++"&location="+url+"&fbid="+);
+        	xmlhttp.send("mode=new&name="++"&location="+url+"&fbid="+fbid);
         }
         $.backstretch(["assets/books.jpg"]);
     </script>
