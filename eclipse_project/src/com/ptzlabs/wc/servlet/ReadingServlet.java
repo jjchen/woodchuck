@@ -45,8 +45,6 @@ public class ReadingServlet extends HttpServlet {
 			AppEngineFile file = readFileAndStore(req.getParameter("location"));
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 			
-			
-			/*
 			// Later, read from the file using the file API
 			lock = false; // Let other people read at the same time
 			FileReadChannel readChannel = fileService.openReadChannel(file, false);
@@ -56,7 +54,7 @@ public class ReadingServlet extends HttpServlet {
 					readChannel, "UTF8"));
 
 			String line = reader.readLine();
-			String [] line_arr = line.split(". ");
+			String [] line_arr = line.split("\. ");
 			String data = "";
 			
 			int sentence = 0;
@@ -64,7 +62,7 @@ public class ReadingServlet extends HttpServlet {
 				int i = 0;
 				while (i < line_arr.length) {
 					data +=	line_arr[i];
-					if (line_arr[i].charAt(end) == '.') {
+					if (line_arr[i].charAt(line_arr[i].length()) == '.') {
 						sentence++;
 						if (sentence == 2) {
 							Chunk chunk = new Chunk(readingKey, data);
@@ -76,23 +74,21 @@ public class ReadingServlet extends HttpServlet {
 					i++;
 				}
 				line = reader.readLine();
-				line_arr = line.split(". ");
+				line_arr = line.split("\. ");
 			}
 
-			if (data != "") {
+			if (data.equals("")) {
 				Chunk chunk = new Chunk(readingKey, data);
 				ofy.save().entity(chunk).now();
 			}
 
 			readChannel.close();
-			// TODO: remove from blobstore
 			
+			// remove blob from blobstore
 			BlobKey blobKey = fileService.getBlobKey(file);
   			BlobstoreService blobStoreService = BlobstoreServiceFactory.getBlobstoreService();
   			
   			blobStoreService.delete(blobKey);
-			 
-			*/
 
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
