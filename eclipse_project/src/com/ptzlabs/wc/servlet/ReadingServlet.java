@@ -61,14 +61,14 @@ public class ReadingServlet extends HttpServlet {
 				String text = stripper.getText(document);
 
 				int fromIndex = 0;
-				String[] line_arr = text.split("\\. ");
+				int endSentence = text.indexOf(". ", fromIndex);
 				int sentence = 0;
-				int i = 0;
+				int fromIndex = 0;
 				String data = "";
 				
 				int chunkCounter = 1;
-				while (i < line_arr.length) {
-					data += line_arr[i];
+				while (endSentence != -1) {
+					data += text.subString(fromIndex, endSentence);
 					sentence++;
 					if (sentence == 2) {
 						Chunk chunk = new Chunk(chunkCounter, readingKey, data);
@@ -77,7 +77,8 @@ public class ReadingServlet extends HttpServlet {
 						sentence = 0;
 						data = "";
 					}
-					i++;
+					fromIndex = endSentence + 2;
+					endSentence = text.indexOf(". ", fromIndex);
 				}
 				if (sentence != 0) {
 					Chunk chunk = new Chunk(chunkCounter, readingKey, data);
@@ -126,6 +127,7 @@ public class ReadingServlet extends HttpServlet {
 							chunkCounter++;
 						}
 						fromIndex = endSentence + 2;
+						endSentence = line.indexOf(". ", fromIndex);
 					}
 					
 					data += line.substring(fromIndex, endSentence);
