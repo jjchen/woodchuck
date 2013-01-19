@@ -19,7 +19,8 @@ import com.ptzlabs.wc.UserData;
 public class LoginServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String accessToken = req.getParameter("access_token");
-		String userId = req.getParameter("userid");
+		String userId_str = req.getParameter("userid");
+		long userId = Long.parseLong(userId_str);
 		
 		if (accessToken == null) {
 			return;
@@ -38,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             UserData data = gson.fromJson(line, UserData.class);
             
             if(data.error == null) {
-            	User user = new User(Long.parseLong(data.id), data.name, data.email);
+            	User user = new User(userId, data.name, data.email);
             	ofy().save().entity(user).now();
             } else {
             	resp.setContentType("text/plain");
