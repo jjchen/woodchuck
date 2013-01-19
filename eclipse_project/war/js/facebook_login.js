@@ -35,8 +35,8 @@ window.fbAsyncInit = function() {
                 type: "POST",
                 url: "/login",
                 data: {
-                    userID: response.authResponse.userID,
-                    accessToken: response.authResponse.accessToken
+                    userid: response.authResponse.userID,
+                    access_token: response.authResponse.accessToken
                 }
             }).done(function (msg) {
                 console.log(msg);
