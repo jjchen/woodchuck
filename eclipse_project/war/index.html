@@ -33,8 +33,15 @@ function sendLink(url, filename) {
 	} else {// code for IE6, IE5
     	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	xmlhttp.open("POST", "", true);
+	xmlhttp.open("POST", "/reading", true);
 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readState == 4 && http.status == 200) {
+			alert(xmlhttp.responseText);
+		}
+	}
+
 	xmlhttp.send("mode=new&name="+filename+"&location="+url+"&fbid="+fbid);
 }
 </script>
