@@ -10,11 +10,11 @@ import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class User {
-	@Id Long id;
-	@Index long fbid;
-	String name;
-	String email;
-	int phone;
+	public @Id Long id;
+	public @Index long fbid;
+	public String name;
+	public String email;
+	public int phone;
 	
 	private User() { }
 	
