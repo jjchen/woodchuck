@@ -24,7 +24,7 @@
     </script>
 
 	<script language="javascript" type="type/javascript">
-function sendLink(url) {
+function sendLink(url, filename) {
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	{// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -34,7 +34,7 @@ function sendLink(url) {
 	}
 	xmlhttp.open("POST", "", true);
 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xmlhttp.send("mode=new&name="++"&location="+url+"&fbid="+);
+	xmlhttp.send("mode=new&name="+filename+"&location="+url+"&fbid="+fbid);
 }
 </script>
 
@@ -58,8 +58,8 @@ for(var i=0;i<event.fpfiles.length;i++)
 {
 	var fpfile = {url: event.fpfiles[i].url}
 	filepicker.stat(fpfile, {filename: true}, function(metadata) {
-		parse metadata to name
-		sendLink(event.fpfiles[i].url, name);
+		var obj = JSON.parse(metadata);
+		sendLink(event.fpfiles[i].url, obj.filename);
 	});
 	out+=event.fpfiles[i].url;
 	out+=' '
