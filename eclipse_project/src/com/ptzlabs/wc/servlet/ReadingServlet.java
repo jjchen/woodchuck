@@ -18,6 +18,7 @@ import com.google.appengine.api.files.AppEngineFile;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
+import com.googlecode.objectify.Key;
 import com.ptzlabs.wc.Reading;
 
 public class ReadingServlet extends HttpServlet {
@@ -40,6 +41,16 @@ public class ReadingServlet extends HttpServlet {
 			}
 
 			ofy().save().entity(reading).now();
+			
+			BlobKey bk = readFileAndStore(req.getParameter("location"));
+			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
+			
+			// INSERT MATH STUFF HERE
+			// THEN GO new Chunk(readingKey, data);
+			// ofy().save().entity(chunk).now();
+
+			// TODO: remove from blobstore
+			
 
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
