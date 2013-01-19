@@ -63,12 +63,11 @@ public class ReadingServlet extends HttpServlet {
 				int fromIndex = 0;
 				int endSentence = text.indexOf(". ", fromIndex);
 				int sentence = 0;
-				int fromIndex = 0;
 				String data = "";
 				
 				int chunkCounter = 1;
 				while (endSentence != -1) {
-					data += text.subString(fromIndex, endSentence);
+					data += text.substring(fromIndex, endSentence);
 					sentence++;
 					if (sentence == 2) {
 						Chunk chunk = new Chunk(chunkCounter, readingKey, data);
