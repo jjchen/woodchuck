@@ -8,29 +8,29 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
 	<script type="text/javascript" src="js/facebook_login.js"></script>
+	<script type="text/javascript" src="js/backstretch.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+	<link href='assets/style.css' rel='stylesheet'>
 	<script type="text/javascript">
-        function login() {
-            FB.login(function(response) {
-                if (response.authResponse) {
-                    // connected
-                } else {
-                    // cancelled
-                }
-            }, {scope: 'email, publish_stream'});
-        }
         function sendLink(url) {
-        	var xmlhttp;
-        	if (window.XMLHttpRequest)
-        	{// code for IE7+, Firefox, Chrome, Opera, Safari
-        		xmlhttp=new XMLHttpRequest();
-        	} else {// code for IE6, IE5
-            	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        	}
-        	xmlhttp.open("POST", "", true);
-        	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        	xmlhttp.send("mode=new&name="++"&location="+url+"&fbid="+);
+        	$.ajax({
+                type: "POST",
+                url: "/reading",
+                data: {
+                    mode: "new",
+                    name: filename,
+                    location: url,
+                    fbid: fbid
+                }
+            }).done(function (msg) {
+                if(msg != "OK") {
+                	console.log(msg);
+                }
+            });
         }
-        $.backstretch(["assets/books.jpg"]);
+        $("document").ready(function() {
+        	$.backstretch(["assets/books.jpg"]);
+        });
     </script>
 	<title>Insert title here</title>
 </head>
