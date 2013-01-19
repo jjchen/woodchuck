@@ -2,7 +2,9 @@ package com.ptzlabs.wc.servlet;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -13,6 +15,9 @@ import java.util.Date;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -47,28 +52,30 @@ public class ReadingServlet extends HttpServlet {
 			}
 
 			ofy().save().entity(reading).now();
-			
-			AppEngineFile file = readFileAndStore(req.getParameter("location"), req.getParameter("type"));
+
+			AppEngineFile file = readFileAndStore(req.getParameter("location"),
+					req.getParameter("type"));
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
-			
+
 			FileService fileService = FileServiceFactory.getFileService();
-			
+
 			// Later, read from the file using the file API
-			FileReadChannel readChannel = fileService.openReadChannel(file, false);
-			
+			FileReadChannel readChannel = fileService.openReadChannel(file,
+					false);
+
 			// Again, different standard Java ways of reading from the channel.
 			BufferedReader reader = new BufferedReader(Channels.newReader(
 					readChannel, "UTF8"));
 
 			String line = reader.readLine();
-			String [] line_arr = line.split("\\. ");
+			String[] line_arr = line.split("\\. ");
 			String data = "";
-			
+
 			int sentence = 0;
 			while (line != null) {
 				int i = 0;
 				while (i < line_arr.length) {
-					data +=	line_arr[i];
+					data += line_arr[i];
 					if (line_arr[i].charAt(line_arr[i].length()) == '.') {
 						sentence++;
 						if (sentence == 2) {
@@ -90,12 +97,13 @@ public class ReadingServlet extends HttpServlet {
 			}
 
 			readChannel.close();
-			
+
 			// remove blob from blobstore
 			BlobKey blobKey = fileService.getBlobKey(file);
-  			BlobstoreService blobStoreService = BlobstoreServiceFactory.getBlobstoreService();
-  			
-  			blobStoreService.delete(blobKey);
+			BlobstoreService blobStoreService = BlobstoreServiceFactory
+					.getBlobstoreService();
+
+			blobStoreService.delete(blobKey);
 
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
@@ -112,37 +120,39 @@ public class ReadingServlet extends HttpServlet {
 
 			// Open a channel to write to it
 			boolean lock = false;
-			FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
-			
+			FileWriteChannel writeChannel = fileService.openWriteChannel(file,
+					lock);
+
 			BufferedReader reader;
 
 			if (type.equals("pdf")) {
 				PDDocument document = PDDocument.load(location);
 				PDFTextStripper stripper = new PDFTextStripper();
 				String text = stripper.getText(document);
-				reader = new BufferedInputStream(new ByteArrayInputStream(text.getBytes());
+				reader = new BufferedReader(new InputStreamReader(
+						new BufferedInputStream(new ByteArrayInputStream(
+								text.getBytes()))));
 
 			} else {
 
-				// InputStream in = new BufferedInputStream(new URL(location).openStream());
-				reader = new BufferedReader(new InputStreamReader(
-						new URL(location).openStream()));
+				// InputStream in = new BufferedInputStream(new
+				// URL(location).openStream());
+				reader = new BufferedReader(new InputStreamReader(new URL(
+						location).openStream()));
 			}
 			String line;
 			while ((line = reader.readLine()) != null) {
 				writeChannel.write(ByteBuffer.wrap(line.getBytes()));
-            }
+			}
 			reader.close();
 			/*
-			 * byte data[] = new byte[1024];
-			int count;
-			while ((count = in.read(data, 0, 1024)) != -1) {
-				writeChannel.write(ByteBuffer.wrap(data));
-			}
-			if (in != null) in.close();
-			*/
+			 * byte data[] = new byte[1024]; int count; while ((count =
+			 * in.read(data, 0, 1024)) != -1) {
+			 * writeChannel.write(ByteBuffer.wrap(data)); } if (in != null)
+			 * in.close();
+			 */
 			writeChannel.closeFinally();
-			
+
 			return file;
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
@@ -151,8 +161,8 @@ public class ReadingServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
-		
+
 	}
 }
