@@ -2,15 +2,14 @@ package com.ptzlabs.wc.servlet;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +29,7 @@ import com.google.appengine.api.files.FileWriteChannel;
 import com.googlecode.objectify.Key;
 import com.ptzlabs.wc.Chunk;
 import com.ptzlabs.wc.Reading;
+import com.ptzlabs.wc.User;
 
 public class ReadingServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -130,7 +130,7 @@ public class ReadingServlet extends HttpServlet {
 						endSentence = line.indexOf(". ", fromIndex);
 					}
 					
-					data += line.substring(fromIndex, sentence.length);
+					data += line.substring(fromIndex, endSentence);
 					line = reader.readLine();
 				}
 
@@ -189,6 +189,10 @@ public class ReadingServlet extends HttpServlet {
 			writeChannel.closeFinally();
 
 			return file;
-
+	}
+	
+	public static List<Reading> getReadings(long fbid) {
+		User user = User.getUser(fbid);
+		return ofy().load().type(Reading.class).filter("user", user.id).list();
 	}
 }
