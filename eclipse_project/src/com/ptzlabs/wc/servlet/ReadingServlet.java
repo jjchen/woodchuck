@@ -146,7 +146,7 @@ public class ReadingServlet extends HttpServlet {
 			AppEngineFile file = fileService.createNewBlobFile("text/plain");
 
 			// Open a channel to write to it
-			boolean lock = false;
+			boolean lock = true;
 			FileWriteChannel writeChannel = fileService.openWriteChannel(file,
 					lock);
 
