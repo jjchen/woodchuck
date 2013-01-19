@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
-
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -27,6 +24,10 @@ import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
 import com.googlecode.objectify.Key;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import com.ptzlabs.wc.Chunk;
 import com.ptzlabs.wc.Reading;
 import com.ptzlabs.wc.User;
@@ -55,10 +56,18 @@ public class ReadingServlet extends HttpServlet {
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 
 			if (req.getParameter("type").equals("application/pdf")) {
-				PDDocument document = PDDocument.load(req
-						.getParameter("location"));
-				PDFTextStripper stripper = new PDFTextStripper();
-				String text = stripper.getText(document);
+				
+				PdfReader reader = new PdfReader(new URL(req.getParameter("location")));
+				String text = "";
+				
+				PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+		        TextExtractionStrategy strategy;
+		        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+		            strategy = parser.processContent(i, new SimpleTextExtractionStrategy());
+		            text = text.concat(strategy.getResultantText());
+		        }
+		        reader.close();
+		        
 
 				int fromIndex = 0;
 				int endSentence = text.indexOf(". ", fromIndex);
@@ -66,7 +75,8 @@ public class ReadingServlet extends HttpServlet {
 				String data = "";
 				
 				int chunkCounter = 1;
-				while (endSentence != -1) {
+				while (endSentence >= 0) {
+					endSentence += 2;
 					data += text.substring(fromIndex, endSentence);
 					sentence++;
 					if (sentence == 2) {
@@ -76,7 +86,7 @@ public class ReadingServlet extends HttpServlet {
 						sentence = 0;
 						data = "";
 					}
-					fromIndex = endSentence + 2;
+					fromIndex = endSentence;
 					endSentence = text.indexOf(". ", fromIndex);
 				}
 				if (sentence != 0) {
@@ -109,13 +119,13 @@ public class ReadingServlet extends HttpServlet {
 				String data = "";
 
 				int sentence = 0;
-				int endSentence = 0;
 				int chunkCounter = 1;
-				int fromIndex = 0;
 				while (line != null) {
-					int i = 0;
-					endSentence = line.indexOf(". ", fromIndex);
+					int fromIndex = 0;
+					int endSentence = line.indexOf(". ", fromIndex);
+					
 					while (endSentence >= 0) {
+						endSentence += 2;
 						data += line.substring(fromIndex, endSentence);
 						sentence++;
 						if (sentence == 2) {
@@ -125,11 +135,11 @@ public class ReadingServlet extends HttpServlet {
 							data = "";
 							chunkCounter++;
 						}
-						fromIndex = endSentence + 2;
+						fromIndex = endSentence;
 						endSentence = line.indexOf(". ", fromIndex);
 					}
 					
-					data += line.substring(fromIndex, endSentence);
+					data += line.substring(fromIndex);
 					line = reader.readLine();
 				}
 
