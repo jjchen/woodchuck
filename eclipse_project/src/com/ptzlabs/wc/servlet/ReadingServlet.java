@@ -45,6 +45,21 @@ public class ReadingServlet extends HttpServlet {
 			BlobKey bk = readFileAndStore(req.getParameter("location"));
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 			
+			
+			/*
+			// Later, read from the file using the file API
+			lock = false; // Let other people read at the same time
+			FileReadChannel readChannel = fileService.openReadChannel(file, false);
+
+			// Again, different standard Java ways of reading from the channel.
+			BufferedReader reader = new BufferedReader(Channels.newReader(
+					readChannel, "UTF8"));
+			String line = reader.readLine();
+			// line = "The woods are lovely dark and deep."
+
+			readChannel.close();
+			*/
+			
 			// INSERT MATH STUFF HERE
 			// THEN GO new Chunk(readingKey, data);
 			// ofy().save().entity(chunk).now();
@@ -89,20 +104,6 @@ public class ReadingServlet extends HttpServlet {
 		}
 		
 		return null;
-
-		/*
-		// Later, read from the file using the file API
-		lock = false; // Let other people read at the same time
-		FileReadChannel readChannel = fileService.openReadChannel(file, false);
-
-		// Again, different standard Java ways of reading from the channel.
-		BufferedReader reader = new BufferedReader(Channels.newReader(
-				readChannel, "UTF8"));
-		String line = reader.readLine();
-		// line = "The woods are lovely dark and deep."
-
-		readChannel.close();
-		*/
 		
 	}
 }
