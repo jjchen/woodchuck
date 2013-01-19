@@ -33,7 +33,8 @@ public class ReadingServlet extends HttpServlet {
 		if (req.getParameter("mode").equals("new")
 				&& req.getParameter("name") != null
 				&& req.getParameter("location") != null
-				&& req.getParameter("fbid") != null) {
+				&& req.getParameter("fbid") != null
+				&& req.getParameter("type") != null) {
 
 			Reading reading;
 			if (req.getParameter("dueDate") != null) {
@@ -47,7 +48,7 @@ public class ReadingServlet extends HttpServlet {
 
 			ofy().save().entity(reading).now();
 			
-			AppEngineFile file = readFileAndStore(req.getParameter("location"));
+			AppEngineFile file = readFileAndStore(req.getParameter("location"), req.getParameter("type"));
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 			
 			FileService fileService = FileServiceFactory.getFileService();
@@ -101,7 +102,7 @@ public class ReadingServlet extends HttpServlet {
 		}
 	}
 
-	private static AppEngineFile readFileAndStore(String location) {
+	private static AppEngineFile readFileAndStore(String location, String type) {
 		try {
 			// Get a file service
 			FileService fileService = FileServiceFactory.getFileService();
@@ -112,11 +113,21 @@ public class ReadingServlet extends HttpServlet {
 			// Open a channel to write to it
 			boolean lock = false;
 			FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
+			
+			BufferedReader reader;
 
-			// InputStream in = new BufferedInputStream(new URL(location).openStream());
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					new URL(location).openStream()));
+			if (type.equals("pdf")) {
+				PDDocument document = PDDocument.load(location);
+				PDFTextStripper stripper = new PDFTextStripper();
+				String text = stripper.getText(document);
+				reader = new BufferedInputStream(new ByteArrayInputStream(text.getBytes());
 
+			} else {
+
+				// InputStream in = new BufferedInputStream(new URL(location).openStream());
+				reader = new BufferedReader(new InputStreamReader(
+						new URL(location).openStream()));
+			}
 			String line;
 			while ((line = reader.readLine()) != null) {
 				writeChannel.write(ByteBuffer.wrap(line.getBytes()));
