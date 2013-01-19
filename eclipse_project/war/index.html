@@ -27,9 +27,12 @@
   <body>
     <div id="fb-root"></div>
     <script type="text/javascript" src="js/facebook_login.js"></script>
-    <script type="text/javascript" src="js/filepicker.js"></script>
     <h1>Hello Peter and Junjun! Welcome to woodchuck land! Hi</h1>
-	
+    
+    <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+
+<input type="filepicker" data-fp-apikey="ArDRHUpYoQQ6Yg5Qsmoxbz" data-fp-mimetypes="text/*,application/pdf" data-fp-container="modal" data-fp-multiple="true" data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE" onchange="out='';for(var i=0;i<event.fpfiles.length;i++){out+=event.fpfiles[i].url;out+=' '};alert(out)">
+    
     <table>
       <tr>
         <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
@@ -38,6 +41,5 @@
         <td><a href="woodchuck">Woodchuck</a></td>
       </tr>
     </table>
-  <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
   </body>
 </html>
