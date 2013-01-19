@@ -52,6 +52,7 @@ public class ReadingServlet extends HttpServlet {
 			}
 
 			ofy().save().entity(reading).now();
+			Key<Reading> readingKey = Key.create(Reading.class, reading.id);			
 
 			if (req.getParameter("type").equals("application/pdf")) {
 				PDDocument document = PDDocument.load(req.getParameter("location"));
@@ -61,9 +62,9 @@ public class ReadingServlet extends HttpServlet {
 				String[] line_arr = line.split("\\. ");
 				int sentence = 0;
 				int i = 0;
-				int data = "";
+				String data = "";
 				while (i < line_arr.length) {
-					data += line[i];
+					data += line_arr[i];
 					sentence++;
 					if (sentence == 2) {
 						Chunk chunk = new Chunk(readingKey, data);
@@ -80,11 +81,8 @@ public class ReadingServlet extends HttpServlet {
 
 			} else {
 
-			AppEngineFile file = readFileAndStore(req.getParameter("location"),
-					req.getParameter("type"));
+			AppEngineFile file = readFileAndStore(req.getParameter("location"));
 			
-			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
-
 			FileService fileService = FileServiceFactory.getFileService();
 
 			// Later, read from the file using the file API
