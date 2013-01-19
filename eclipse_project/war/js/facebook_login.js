@@ -5,6 +5,8 @@
  */
 
 // Additional JS functions here
+var fbid = 701479008; 
+
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '457817960938308', // App ID
@@ -44,7 +46,8 @@ window.fbAsyncInit = function() {
                 }
             });
             
-            var fbid = response.authResponse.userID;
+            $("#username").html(response.authResponse.userID);
+            fbid = response.authResponse.userID;
   
         } else if (response.status === 'not_authorized') {
             // not_authorized

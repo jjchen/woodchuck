@@ -18,6 +18,15 @@
 	</servlet-mapping>
 	
 	<servlet>
+	  <servlet-name>Reading</servlet-name>
+	  <servlet-class>com.ptzlabs.wc.servlet.ReadingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>Reading</servlet-name>
+	  <url-pattern>/reading</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	  <servlet-name>SystemServiceServlet</servlet-name>
 	  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 	  <init-param>

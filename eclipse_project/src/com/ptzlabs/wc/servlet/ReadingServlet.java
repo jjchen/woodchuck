@@ -52,10 +52,11 @@ public class ReadingServlet extends HttpServlet {
 			}
 
 			ofy().save().entity(reading).now();
-			Key<Reading> readingKey = Key.create(Reading.class, reading.id);			
+			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 
 			if (req.getParameter("type").equals("application/pdf")) {
-				PDDocument document = PDDocument.load(req.getParameter("location"));
+				PDDocument document = PDDocument.load(req
+						.getParameter("location"));
 				PDFTextStripper stripper = new PDFTextStripper();
 				String text = stripper.getText(document);
 
@@ -81,64 +82,64 @@ public class ReadingServlet extends HttpServlet {
 
 			} else {
 
-			AppEngineFile file = readFileAndStore(req.getParameter("location"));
-			
-			FileService fileService = FileServiceFactory.getFileService();
+				AppEngineFile file = readFileAndStore(req
+						.getParameter("location"));
 
-			// Later, read from the file using the file API
-			FileReadChannel readChannel = fileService.openReadChannel(file,
-					false);
+				FileService fileService = FileServiceFactory.getFileService();
 
-			// Again, different standard Java ways of reading from the channel.
-			BufferedReader reader = new BufferedReader(Channels.newReader(
-					readChannel, "UTF8"));
+				// Later, read from the file using the file API
+				FileReadChannel readChannel = fileService.openReadChannel(file,
+						false);
 
-			String line = reader.readLine();
-			String[] line_arr = line.split("\\. ");
-			String data = "";
+				// Again, different standard Java ways of reading from the
+				// channel.
+				BufferedReader reader = new BufferedReader(Channels.newReader(
+						readChannel, "UTF8"));
 
-			int sentence = 0;
-			while (line != null) {
-				int i = 0;
-				while (i < line_arr.length) {
-					data += line_arr[i];
-					if (line_arr[i].charAt(line_arr[i].length()) == '.') {
-						sentence++;
-						if (sentence == 2) {
-							Chunk chunk = new Chunk(readingKey, data);
-							ofy().save().entity(chunk).now();
-							sentence = 0;
-							data = "";
+				String line = reader.readLine();
+				String[] line_arr = line.split("\\. ");
+				String data = "";
+
+				int sentence = 0;
+				while (line != null) {
+					int i = 0;
+					while (i < line_arr.length) {
+						data += line_arr[i];
+						if (line_arr[i].charAt(line_arr[i].length()) == '.') {
+							sentence++;
+							if (sentence == 2) {
+								Chunk chunk = new Chunk(readingKey, data);
+								ofy().save().entity(chunk).now();
+								sentence = 0;
+								data = "";
+							}
 						}
+						i++;
 					}
-					i++;
+					line = reader.readLine();
+					line_arr = line.split("\\. ");
 				}
-				line = reader.readLine();
-				line_arr = line.split("\\. ");
-			}
 
+				if (data.equals("")) {
+					Chunk chunk = new Chunk(readingKey, data);
+					ofy().save().entity(chunk).now();
+				}
 
-			if (data.equals("")) {
-				Chunk chunk = new Chunk(readingKey, data);
-				ofy().save().entity(chunk).now();
-			}
+				readChannel.close();
 
-			readChannel.close();
+				// remove blob from blobstore
+				BlobKey blobKey = fileService.getBlobKey(file);
+				BlobstoreService blobStoreService = BlobstoreServiceFactory
+						.getBlobstoreService();
 
-			// remove blob from blobstore
-			BlobKey blobKey = fileService.getBlobKey(file);
-			BlobstoreService blobStoreService = BlobstoreServiceFactory
-					.getBlobstoreService();
-
-			blobStoreService.delete(blobKey);
+				blobStoreService.delete(blobKey);
 			}
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
 		}
 	}
 
-	private static AppEngineFile readFileAndStore(String location) {
-		try {
+	private static AppEngineFile readFileAndStore(String location) throws IOException {
 			// Get a file service
 			FileService fileService = FileServiceFactory.getFileService();
 
@@ -152,12 +153,11 @@ public class ReadingServlet extends HttpServlet {
 
 			BufferedReader reader;
 
-
 			// InputStream in = new BufferedInputStream(new
 			// URL(location).openStream());
-			reader = new BufferedReader(new InputStreamReader(new URL(
-					location).openStream()));
-			
+			reader = new BufferedReader(new InputStreamReader(
+					new URL(location).openStream()));
+
 			String line;
 			while ((line = reader.readLine()) != null) {
 				writeChannel.write(ByteBuffer.wrap(line.getBytes()));
@@ -172,15 +172,6 @@ public class ReadingServlet extends HttpServlet {
 			writeChannel.closeFinally();
 
 			return file;
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
 
 	}
 }

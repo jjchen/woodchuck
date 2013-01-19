@@ -28,9 +28,7 @@
 				type : type,
 			}
 		}).done(function(msg) {
-			if (msg != "OK") {
 				console.log(msg);
-			}
 		});
 	}
 	$("document").ready(function() {
@@ -48,7 +46,7 @@
 				filename : true,
 				mimetype : true
 			}, function(metadata) {
-				sendLink(event.fpfiles[i].url, metadata.filename, metadata.mimetype);
+				sendLink(fpfile.url, metadata.filename, metadata.mimetype);
 			});
 			out += event.fpfiles[i].url;
 			out += ' ';
@@ -63,6 +61,7 @@
 
 	<div id="container">
 		<h1>Woodchuck</h1>
+		<span class="right" id="username"></span>
 
 		<div id="wrapper">
 			<div class="filepicker_form right">

@@ -13,7 +13,7 @@ public class Reading {
 	@Id
 	public Long id;
 	public String name;
-	public User user;
+	public long user;
 	public Date createdDate;
 	public Date dueDate; // defaults to 7 days from now
 	
@@ -25,7 +25,7 @@ public class Reading {
 	
 	public Reading(String name, long fbid) {
 		this.name = name;
-		this.user = User.getUser(fbid);
+		this.user = User.getUser(fbid).id;
 		
 		createdDate = new Date();
 		// now + 7 days
@@ -34,7 +34,7 @@ public class Reading {
 	
 	public Reading(String name, Date dueDate, long fbid) {
 		this.name = name;
-		this.user = User.getUser(fbid);
+		this.user = User.getUser(fbid).id;
 		
 		createdDate = new Date();
 		this.dueDate = dueDate;
