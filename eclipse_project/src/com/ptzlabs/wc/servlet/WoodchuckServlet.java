@@ -1,4 +1,4 @@
-package com.ptzlabs.wc;
+package com.ptzlabs.wc.servlet;
 import java.io.IOException;
 import javax.servlet.http.*;
 
