@@ -105,7 +105,7 @@ public class ReadingServlet extends HttpServlet {
 					int i = 0;
 					while (i < line_arr.length) {
 						data += line_arr[i];
-						if (line_arr[i].charAt(line_arr[i].length()) == '.') {
+						if (line_arr[i].charAt(line_arr[i].length() - 1) == '.') {
 							sentence++;
 							if (sentence == 2) {
 								Chunk chunk = new Chunk(readingKey, data);
