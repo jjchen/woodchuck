@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 		
 		// check datastore if such fbid exists already.
 		// if not, ask facebook graph for data and write a new entry
-		if(ofy().load().type(User.class).filter("fbid", userId).list().size() == 0) {
+		if(User.getUsers(userId).size() == 0) {
             URL url = new URL("https://graph.facebook.com/" + userId + 
             		"?fields=name,email&access_token=" + accessToken);
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
             	User user = new User(userId, data.name, data.email);
             	ofy().save().entity(user).now();
             	resp.setContentType("text/plain");
-            	resp.getWriter().println(line);
+            	resp.getWriter().println("OK");
             } else {
             	resp.setContentType("text/plain");
             	resp.getWriter().println("FB Error " + data.error.code + ": " + data.error.message);
