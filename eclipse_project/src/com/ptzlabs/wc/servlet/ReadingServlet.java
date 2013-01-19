@@ -5,6 +5,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -33,55 +34,38 @@ import com.ptzlabs.wc.Reading;
 import com.ptzlabs.wc.User;
 
 public class ReadingServlet extends HttpServlet {
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		if (req.getParameter("mode").equals("new")
-				&& req.getParameter("name") != null
-				&& req.getParameter("location") != null
-				&& req.getParameter("fbid") != null
+		if (req.getParameter("mode").equals("new") && req.getParameter("name") != null
+				&& req.getParameter("location") != null && req.getParameter("fbid") != null
 				&& req.getParameter("type") != null) {
 
 			Reading reading;
 			if (req.getParameter("dueDate") != null) {
-				reading = new Reading(req.getParameter("name"), new Date(
-						Long.parseLong(req.getParameter("dueDate"))),
+				reading = new Reading(req.getParameter("name"), new Date(Long.parseLong(req.getParameter("dueDate"))),
 						Long.parseLong(req.getParameter("fbid")));
 			} else {
-				reading = new Reading(req.getParameter("name"),
-						Long.parseLong(req.getParameter("fbid")));
+				reading = new Reading(req.getParameter("name"), Long.parseLong(req.getParameter("fbid")));
 			}
 
 			ofy().save().entity(reading).now();
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 
 			if (req.getParameter("type").equals("application/pdf")) {
-				
-				PdfReader reader = new PdfReader(new URL(req.getParameter("location")));
-				String text = "";
-				
-				PdfReaderContentParser parser = new PdfReaderContentParser(reader);
-		        TextExtractionStrategy strategy;
-		        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
-		            strategy = parser.processContent(i, new SimpleTextExtractionStrategy());
-		            text = text.concat(strategy.getResultantText());
-		        }
-		        reader.close();
-		        
+				String text = readPdf(req.getParameter("location"));
 
 				int fromIndex = 0;
 				int endSentence = text.indexOf(". ", fromIndex);
 				int sentence = 0;
 				String data = "";
-				
+
 				int chunkCounter = 1;
 				while (endSentence >= 0) {
 					endSentence += 2;
 					data += text.substring(fromIndex, endSentence);
 					sentence++;
 					if (sentence == 2) {
-						Chunk chunk = new Chunk(chunkCounter, readingKey, data);
-						ofy().save().entity(chunk).now();
+						createAndStoreChunk(chunkCounter, readingKey, data);
 						chunkCounter++;
 						sentence = 0;
 						data = "";
@@ -90,47 +74,31 @@ public class ReadingServlet extends HttpServlet {
 					endSentence = text.indexOf(". ", fromIndex);
 				}
 				if (sentence != 0) {
-					Chunk chunk = new Chunk(chunkCounter, readingKey, data);
-					ofy().save().entity(chunk).now();
+					createAndStoreChunk(chunkCounter, readingKey, data);
 				}
-				
-				//total chunks = chunkCounter
-				Reading r = ofy().load().key(readingKey).get();
-				r.setTotalChunks(chunkCounter);
-				ofy().save().entity(r).now();
 
+				updateTotalChunks(readingKey, chunkCounter);
 			} else {
-
-				AppEngineFile file = readFileAndStore(req
-						.getParameter("location"));
-
+				AppEngineFile file = readText(req.getParameter("location"));
 				FileService fileService = FileServiceFactory.getFileService();
-
-				// Later, read from the file using the file API
-				FileReadChannel readChannel = fileService.openReadChannel(file,
-						false);
-
-				// Again, different standard Java ways of reading from the
-				// channel.
-				BufferedReader reader = new BufferedReader(Channels.newReader(
-						readChannel, "UTF8"));
+				FileReadChannel readChannel = fileService.openReadChannel(file, false);
+				BufferedReader reader = new BufferedReader(Channels.newReader(readChannel, "UTF8"));
 
 				String line = reader.readLine();
 				String data = "";
-
 				int sentence = 0;
 				int chunkCounter = 1;
+				
 				while (line != null) {
 					int fromIndex = 0;
 					int endSentence = line.indexOf(". ", fromIndex);
-					
+
 					while (endSentence >= 0) {
 						endSentence += 2;
 						data += line.substring(fromIndex, endSentence);
 						sentence++;
 						if (sentence == 2) {
-							Chunk chunk = new Chunk(chunkCounter, readingKey, data);
-							ofy().save().entity(chunk).now();
+							createAndStoreChunk(chunkCounter, readingKey, data);
 							sentence = 0;
 							data = "";
 							chunkCounter++;
@@ -138,27 +106,21 @@ public class ReadingServlet extends HttpServlet {
 						fromIndex = endSentence;
 						endSentence = line.indexOf(". ", fromIndex);
 					}
-					
+
 					data += line.substring(fromIndex);
 					line = reader.readLine();
 				}
-
-				if (sentence != 0) {
-					Chunk chunk = new Chunk(chunkCounter, readingKey, data);
-					ofy().save().entity(chunk).now();
-				}
 				
-				//total chunks = chunkCounter
-				Reading r = ofy().load().key(readingKey).get();
-				r.setTotalChunks(chunkCounter);
-				ofy().save().entity(r).now();
-
 				readChannel.close();
 
+				if (sentence != 0) {
+					createAndStoreChunk(chunkCounter, readingKey, data);
+				}
+				updateTotalChunks(readingKey, chunkCounter);
+				
 				// remove blob from blobstore
 				BlobKey blobKey = fileService.getBlobKey(file);
-				BlobstoreService blobStoreService = BlobstoreServiceFactory
-						.getBlobstoreService();
+				BlobstoreService blobStoreService = BlobstoreServiceFactory.getBlobstoreService();
 
 				blobStoreService.delete(blobKey);
 			}
@@ -166,15 +128,40 @@ public class ReadingServlet extends HttpServlet {
 			resp.getWriter().println("OK");
 		}
 	}
+	
+	private static void createAndStoreChunk(long id, Key<Reading> readingKey, String data) {
+		Chunk chunk = new Chunk(id, readingKey, data);
+		ofy().save().entity(chunk).now();
+	}
+	
+	private static void updateTotalChunks(Key<Reading> readingKey, int totalChunks) {
+		Reading r = ofy().load().key(readingKey).get();
+		r.setTotalChunks(totalChunks);
+		ofy().save().entity(r).now();
+	}
+	
+	private static String readPdf(String location) throws IOException {
+		String text = "";
+		PdfReader reader;
+		
+		reader = new PdfReader(new URL(location));
+		PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+		TextExtractionStrategy strategy;
+		for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+			strategy = parser.processContent(i, new SimpleTextExtractionStrategy());
+			text = text.concat(strategy.getResultantText());
+		}
+		reader.close();
+		return text;
+	}
 
-	private static AppEngineFile readFileAndStore(String location) throws IOException {
+	private static AppEngineFile readText(String location) throws IOException {
 		BufferedReader reader;
 		FileService fileService = FileServiceFactory.getFileService();
 		AppEngineFile file = fileService.createNewBlobFile("text/plain");
 		FileWriteChannel writeChannel = fileService.openWriteChannel(file, true);
 
-		reader = new BufferedReader(new InputStreamReader(
-				new URL(location).openStream()));
+		reader = new BufferedReader(new InputStreamReader(new URL(location).openStream()));
 
 		String line;
 		while ((line = reader.readLine()) != null) {
@@ -185,12 +172,12 @@ public class ReadingServlet extends HttpServlet {
 
 		return file;
 	}
-	
+
 	public static List<Reading> getReadings(long fbid) {
 		User user = User.getUser(fbid);
 		return ofy().load().type(Reading.class).filter("user", user.id).list();
 	}
-	
+
 	public static Reading get(long id) {
 		return ofy().load().type(Reading.class).id(id).get();
 	}
