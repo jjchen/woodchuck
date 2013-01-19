@@ -54,13 +54,14 @@ public class ReadingServlet extends HttpServlet {
 			ofy().save().entity(reading).now();
 
 			if (req.getParameter("type").equals("application/pdf")) {
-				PDDocument document = PDDocument.load(location);
+				PDDocument document = PDDocument.load(req.getParameter("location"));
 				PDFTextStripper stripper = new PDFTextStripper();
 				String text = stripper.getText(document);
 
 				String[] line_arr = line.split("\\. ");
 				int sentence = 0;
 				int i = 0;
+				int data = "";
 				while (i < line_arr.length) {
 					data += line[i];
 					sentence++;
