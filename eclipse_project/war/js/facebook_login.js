@@ -33,7 +33,7 @@ window.fbAsyncInit = function() {
 
             $.ajax({
                 type: "POST",
-                url: "/login.html",
+                url: "/login",
                 date: {
                     userID: response.authResponse.userID,
                     accessToken: response.authResponse.accessToken
