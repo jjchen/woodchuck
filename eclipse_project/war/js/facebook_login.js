@@ -34,12 +34,12 @@ window.fbAsyncInit = function() {
             $.ajax({
                 type: "POST",
                 url: "/login",
-                date: {
+                data: {
                     userID: response.authResponse.userID,
                     accessToken: response.authResponse.accessToken
                 }
             }).done(function (msg) {
-                alert("hi all done");
+                console.log(msg);
             });
 
   
