@@ -41,6 +41,8 @@ public class LoginServlet extends HttpServlet {
             if(data.error == null) {
             	User user = new User(userId, data.name, data.email);
             	ofy().save().entity(user).now();
+            	resp.setContentType("text/plain");
+            	resp.getWriter().println(line);
             } else {
             	resp.setContentType("text/plain");
             	resp.getWriter().println("FB Error " + data.error.code + ": " + data.error.message);
