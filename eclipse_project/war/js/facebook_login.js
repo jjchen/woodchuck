@@ -10,7 +10,7 @@
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '457817960938308', // App ID
-        channelUrl : '//www.woodchuck.appspot.com/channel.html', // Channel File
+        channelUrl : '//www.woodchuckapp.appspot.com/channel.html', // Channel File
         status     : true, // check login status
         cookie     : true, // enable cookies to allow server to access session
         xfbml      : true  // parse XFBML
