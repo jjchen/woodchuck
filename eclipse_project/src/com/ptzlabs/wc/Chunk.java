@@ -11,11 +11,11 @@ public class Chunk {
 	@Id Long id;
 	@Parent Key<Reading> reading;
 	boolean isRead = false;
-	Text data;
+	String data;
 	
 	private Chunk() { }
 
-	public Chunk(Key<Reading> key, Text data) {
+	public Chunk(Key<Reading> key, String data) {
 		this.reading = key;
 		this.data = data;
 		this.isRead = false;

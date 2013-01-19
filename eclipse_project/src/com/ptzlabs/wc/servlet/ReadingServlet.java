@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
@@ -14,11 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.files.AppEngineFile;
+import com.google.appengine.api.files.FileReadChannel;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
 import com.googlecode.objectify.Key;
+import com.ptzlabs.wc.Chunk;
 import com.ptzlabs.wc.Reading;
 
 public class ReadingServlet extends HttpServlet {
@@ -45,8 +50,9 @@ public class ReadingServlet extends HttpServlet {
 			AppEngineFile file = readFileAndStore(req.getParameter("location"));
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 			
+			FileService fileService = FileServiceFactory.getFileService();
+			
 			// Later, read from the file using the file API
-			lock = false; // Let other people read at the same time
 			FileReadChannel readChannel = fileService.openReadChannel(file, false);
 			
 			// Again, different standard Java ways of reading from the channel.
@@ -54,7 +60,7 @@ public class ReadingServlet extends HttpServlet {
 					readChannel, "UTF8"));
 
 			String line = reader.readLine();
-			String [] line_arr = line.split("\. ");
+			String [] line_arr = line.split("\\. ");
 			String data = "";
 			
 			int sentence = 0;
@@ -66,20 +72,20 @@ public class ReadingServlet extends HttpServlet {
 						sentence++;
 						if (sentence == 2) {
 							Chunk chunk = new Chunk(readingKey, data);
-							ofy.save().entity(chunk).now();
-							sentence == 0;
+							ofy().save().entity(chunk).now();
+							sentence = 0;
 							data = "";
 						}
 					}
 					i++;
 				}
 				line = reader.readLine();
-				line_arr = line.split("\. ");
+				line_arr = line.split("\\. ");
 			}
 
 			if (data.equals("")) {
 				Chunk chunk = new Chunk(readingKey, data);
-				ofy.save().entity(chunk).now();
+				ofy().save().entity(chunk).now();
 			}
 
 			readChannel.close();
