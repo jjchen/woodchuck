@@ -25,7 +25,7 @@
     </script>
 
 	<script language="javascript" type="type/javascript">
-function sendLink(url) {
+function sendLink(url, filename) {
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	{// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -35,7 +35,7 @@ function sendLink(url) {
 	}
 	xmlhttp.open("POST", "", true);
 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xmlhttp.send("mode=new&name="++"&location="+url+"&fbid="+);
+	xmlhttp.send("mode=new&name="+filename+"&location="+url+"&fbid="+fbid);
 }
 </script>
 
