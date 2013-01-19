@@ -50,22 +50,43 @@ public class ReadingServlet extends HttpServlet {
 			// Later, read from the file using the file API
 			lock = false; // Let other people read at the same time
 			FileReadChannel readChannel = fileService.openReadChannel(file, false);
-
+			
 			// Again, different standard Java ways of reading from the channel.
 			BufferedReader reader = new BufferedReader(Channels.newReader(
 					readChannel, "UTF8"));
+
 			String line = reader.readLine();
-			// line = "The woods are lovely dark and deep."
+			String [] line_arr = line.split(". ");
+			String data = "";
+			
+			int sentence = 0;
+			while (line != null) {
+				int i = 0;
+				while (i < line_arr.length) {
+					data +=	line_arr[i];
+					if (line_arr[i].charAt(end) == '.') {
+						sentence++;
+						if (sentence == 2) {
+							Chunk chunk = new Chunk(readingKey, data);
+							ofy.save().entity(chunk).now();
+							sentence == 0;
+							data = "";
+						}
+					}
+					i++;
+				}
+				line = reader.readLine();
+				line_arr = line.split(". ");
+			}
+
+			if (data != "") {
+				Chunk chunk = new Chunk(readingKey, data);
+				ofy.save().entity(chunk).now();
+			}
 
 			readChannel.close();
-			*/
-			
-			// INSERT MATH STUFF HERE
-			// THEN GO new Chunk(readingKey, data);
-			// ofy().save().entity(chunk).now();
-
 			// TODO: remove from blobstore
-			
+			*/
 
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
