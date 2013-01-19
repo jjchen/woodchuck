@@ -7,4 +7,6 @@ public class User {
 	@Id Long id;
 	@Index Long fbid;
 	String name;
+	String email;
+	int phone;
 }
