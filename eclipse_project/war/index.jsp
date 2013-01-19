@@ -12,7 +12,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Oswald:400,300,700' rel='stylesheet' type='text/css'>
 	<link href='assets/style.css' rel='stylesheet'>
 	<script type="text/javascript">
-        function sendLink(url) {
+        function sendLink(url, filename, type) {
         	$.ajax({
                 type: "POST",
                 url: "/reading",
@@ -20,7 +20,8 @@
                     mode: "new",
                     name: filename,
                     location: url,
-                    fbid: fbid
+                    fbid: fbid,
+                    type: type,
                 }
             }).done(function (msg) {
                 if(msg != "OK") {
@@ -47,15 +48,13 @@
 		onchange="out='';
 for(var i=0;i<event.fpfiles.length; i++)
 {
-	var
-		fpfile={url: event.fpfiles[i].url}
-	filepicker.stat(fpfile, {filename:
-		true}, function(metadata) {
-		parse metadata to name
-		sendLink(event.fpfiles[i].url, name);
+	var fpfile={url: event.fpfiles[i].url}
+	filepicker.stat(fpfile, {filename: true, mimetype: true}, function(metadata) {
+		var obj = JSON.parse(metadata);
+		sendLink(event.fpfiles[i].url, obj.filename, obj.mimetype);
 	});
 	out+=event.fpfiles[i].url;
-		out+=' '};alert(out)">
+	out+=' '};alert(out)">
 	
 	</div>
 
