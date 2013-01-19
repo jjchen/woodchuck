@@ -49,6 +49,9 @@ public class LoginServlet extends HttpServlet {
             }
             
             reader.close();
+		} else {
+			resp.setContentType("text/plain");
+        	resp.getWriter().println("OK");
 		}
 		
 		

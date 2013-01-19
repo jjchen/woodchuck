@@ -39,7 +39,9 @@ window.fbAsyncInit = function() {
                     access_token: response.authResponse.accessToken
                 }
             }).done(function (msg) {
-                console.log("hello" + msg);
+                if(msg != "OK") {
+                	console.log(msg);
+                }
             });
             
             var fbid = response.authResponse.userID;
