@@ -59,8 +59,8 @@ for(var i=0;i<event.fpfiles.length;i++)
 {
 	var fpfile = {url: event.fpfiles[i].url}
 	filepicker.stat(fpfile, {filename: true}, function(metadata) {
-		parse metadata to name
-		sendLink(event.fpfiles[i].url, name);
+		var obj = JSON.parse(metadata);
+		sendLink(event.fpfiles[i].url, obj.filename);
 	});
 	out+=event.fpfiles[i].url;
 	out+=' '
