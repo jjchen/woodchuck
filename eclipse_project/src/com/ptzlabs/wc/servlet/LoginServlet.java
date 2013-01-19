@@ -25,31 +25,34 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		
-		try {
-            URL url = new URL("https://graph.facebook.com/" + userId + 
-            		"?fields=name,email&access_token=" + accessToken);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+		// check datastore if such fbid exists already.
+		// if not, ask facebook graph for data and write a new entry
+		if(ofy().load().type(User.class).filter("fbid", userId).list().size() == 0) {
+			try {
+	            URL url = new URL("https://graph.facebook.com/" + userId + 
+	            		"?fields=name,email&access_token=" + accessToken);
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 
-            // there is only one json line to read
-            String line = reader.readLine();
-            Gson gson = new Gson();
-            UserData data = gson.fromJson(line, UserData.class);
-            
-            if(data.error != null) {
-            	User user = new User(Long.parseLong(data.id), data.name, data.email);
-            	ofy().save().entity(user).now();
-            } else {
-            	resp.setContentType("text/plain");
-            	resp.getWriter().println("FB Error " + data.error.code + ": " + data.error.message);
-            }
-            
-            reader.close();
+	            // there is only one json line to read
+	            String line = reader.readLine();
+	            Gson gson = new Gson();
+	            UserData data = gson.fromJson(line, UserData.class);
+	            
+	            if(data.error != null) {
+	            	User user = new User(Long.parseLong(data.id), data.name, data.email);
+	            	ofy().save().entity(user).now();
+	            } else {
+	            	resp.setContentType("text/plain");
+	            	resp.getWriter().println("FB Error " + data.error.code + ": " + data.error.message);
+	            }
+	            
+	            reader.close();
 
-        } catch (MalformedURLException e) {
-            // ...
-        } catch (IOException e) {
-            // ...
-        }
+	        } catch (Exception e) {
+	        	resp.setContentType("text/plain");
+            	resp.getWriter().println("Connection Error");
+	        }
+		}
 		
 		
 		/*
