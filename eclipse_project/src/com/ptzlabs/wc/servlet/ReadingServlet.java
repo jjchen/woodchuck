@@ -64,21 +64,29 @@ public class ReadingServlet extends HttpServlet {
 				int sentence = 0;
 				int i = 0;
 				String data = "";
+				
+				int chunkCounter = 1;
 				while (i < line_arr.length) {
 					data += line_arr[i];
 					sentence++;
 					if (sentence == 2) {
-						Chunk chunk = new Chunk(readingKey, data);
+						Chunk chunk = new Chunk(chunkCounter, readingKey, data);
 						ofy().save().entity(chunk).now();
+						chunkCounter++;
 						sentence = 0;
 						data = "";
 					}
 					i++;
 				}
 				if (sentence != 0) {
-					Chunk chunk = new Chunk(readingKey, data);
+					Chunk chunk = new Chunk(chunkCounter, readingKey, data);
 					ofy().save().entity(chunk).now();
 				}
+				
+				//total chunks = chunkCounter
+				Reading r = ofy().load().key(readingKey).get();
+				r.setTotalChunks(chunkCounter);
+				ofy().save().entity(r).now();
 
 			} else {
 
@@ -100,6 +108,8 @@ public class ReadingServlet extends HttpServlet {
 				String data = "";
 
 				int sentence = 0;
+
+				int chunkCounter = 1;
 				int fromIndex = 0;
 				while (line != null) {
 					int i = 0;
@@ -108,10 +118,11 @@ public class ReadingServlet extends HttpServlet {
 						data += line.subString(fromIndex, endSentence);
 						sentence++;
 						if (sentence == 2) {
-							Chunk chunk = new Chunk(readingKey, data);
+							Chunk chunk = new Chunk(chunkCounter, readingKey, data);
 							ofy().save().entity(chunk).now();
 							sentence = 0;
 							data = "";
+							chunkCounter++;
 						}
 						fromIndex = endSentence;
 					}
@@ -121,9 +132,14 @@ public class ReadingServlet extends HttpServlet {
 				}
 
 				if (sentence != 0) {
-					Chunk chunk = new Chunk(readingKey, data);
+					Chunk chunk = new Chunk(chunkCounter, readingKey, data);
 					ofy().save().entity(chunk).now();
 				}
+				
+				//total chunks = chunkCounter
+				Reading r = ofy().load().key(readingKey).get();
+				r.setTotalChunks(chunkCounter);
+				ofy().save().entity(r).now();
 
 				readChannel.close();
 
