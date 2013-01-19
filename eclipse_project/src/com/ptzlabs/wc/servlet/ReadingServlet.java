@@ -53,8 +53,35 @@ public class ReadingServlet extends HttpServlet {
 
 			ofy().save().entity(reading).now();
 
+			if (req.getParameter("type").equals("application/pdf")) {
+				PDDocument document = PDDocument.load(location);
+				PDFTextStripper stripper = new PDFTextStripper();
+				String text = stripper.getText(document);
+
+				String[] line_arr = line.split("\\. ");
+				int sentence = 0;
+				int i = 0;
+				while (i < line_arr.length) {
+					data += line[i];
+					sentence++;
+					if (sentence == 2) {
+						Chunk chunk = new Chunk(readingKey, data);
+						ofy().save().entity(chunk).now();
+						sentence = 0;
+						data = "";
+					}
+					i++;
+				}
+				if (sentence != 0) {
+					Chunk chunk = new Chunk(readingKey, data);
+					ofy().save().entity(chunk).now();
+				}
+
+			} else {
+
 			AppEngineFile file = readFileAndStore(req.getParameter("location"),
 					req.getParameter("type"));
+			
 			Key<Reading> readingKey = Key.create(Reading.class, reading.id);
 
 			FileService fileService = FileServiceFactory.getFileService();
@@ -91,6 +118,7 @@ public class ReadingServlet extends HttpServlet {
 				line_arr = line.split("\\. ");
 			}
 
+
 			if (data.equals("")) {
 				Chunk chunk = new Chunk(readingKey, data);
 				ofy().save().entity(chunk).now();
@@ -104,13 +132,13 @@ public class ReadingServlet extends HttpServlet {
 					.getBlobstoreService();
 
 			blobStoreService.delete(blobKey);
-
+			}
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
 		}
 	}
 
-	private static AppEngineFile readFileAndStore(String location, String type) {
+	private static AppEngineFile readFileAndStore(String location) {
 		try {
 			// Get a file service
 			FileService fileService = FileServiceFactory.getFileService();
@@ -125,21 +153,12 @@ public class ReadingServlet extends HttpServlet {
 
 			BufferedReader reader;
 
-			if (type.equals("pdf")) {
-				PDDocument document = PDDocument.load(location);
-				PDFTextStripper stripper = new PDFTextStripper();
-				String text = stripper.getText(document);
-				reader = new BufferedReader(new InputStreamReader(
-						new BufferedInputStream(new ByteArrayInputStream(
-								text.getBytes()))));
 
-			} else {
-
-				// InputStream in = new BufferedInputStream(new
-				// URL(location).openStream());
-				reader = new BufferedReader(new InputStreamReader(new URL(
-						location).openStream()));
-			}
+			// InputStream in = new BufferedInputStream(new
+			// URL(location).openStream());
+			reader = new BufferedReader(new InputStreamReader(new URL(
+					location).openStream()));
+			
 			String line;
 			while ((line = reader.readLine()) != null) {
 				writeChannel.write(ByteBuffer.wrap(line.getBytes()));
