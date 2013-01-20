@@ -18,8 +18,8 @@ import com.twilio.sdk.verbs.Sms;
 
 public class TwilioAnsweringServlet extends HttpServlet {
     public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String fromNumber = request.getParameter("From");
-		String text = request.getParameter("Body);		
+		String fromNumber = req.getParameter("From");
+		String text = req.getParameter("Body");		
 
 		
     }
