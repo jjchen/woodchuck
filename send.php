@@ -23,14 +23,12 @@
     $client = new Services_Twilio($AccountSid, $AuthToken);
  
 	$sms = $client->account->sms_messages->create(
+ 		"+13238440271", 
+ 		// the number we are sending to - Any phone number
+        $_GET['number'],
  
-            "+13238440271", 
- 
-            // the number we are sending to - Any phone number
-            $_POST['number'],
- 
-            // the sms body
-        	$_POST['data']
+        // the sms body
+        $_GET['data']
 	);
  
 ?>
