@@ -12,16 +12,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class DynamicList extends ListActivity {
+	
+	private String fbid;
 
 	class DownloadReadingsTask extends DownloadTask {
 
@@ -30,8 +34,7 @@ public class DynamicList extends ListActivity {
 			String uri = "http://wc.ptzlabs.com/reading?";
 			uri += arg0[0] + "=" + arg0[1];
 			uri += "&" + arg0[2] + "=" + arg0[3];
-			Log.d("update", "check2");
-
+			
 			return uri;
 		}
 
@@ -90,13 +93,23 @@ public class DynamicList extends ListActivity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+
+		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.list);
+		
+		/*
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.gal_title);
+
+		Typeface type = Typeface.createFromAsset(getAssets(), "Oswald.ttf");
+		TextView title = (TextView) findViewById(R.string.dynamic_list);
+		title.setText(R.string.hello);
+		title.setTypeface(type); */
 
 		Intent i = getIntent();
-		String fbid = i.getStringExtra("fbid");
+		fbid = i.getStringExtra("fbid");
 		String [] home_req_array = {"mode", "getReadings", "fbid", fbid};
 		new DownloadReadingsTask().execute(home_req_array);
-		new AlertDialog.Builder(this).setTitle("Argh").setMessage("ohai").setNeutralButton("Close", null).show();  
+		// new AlertDialog.Builder(this).setTitle("Argh").setMessage("ohai").setNeutralButton("Close", null).show();  
 
 		adapter = new ObjectAdapter<String>(this,
 				android.R.layout.simple_list_item_1, items, listItems);
@@ -112,17 +125,19 @@ public class DynamicList extends ListActivity {
 		try {
 			JSONObject o = (JSONObject) v.getTag();
 			String readid = (String) o.get("id").toString();
-			
+
 			/* Toast.makeText(getApplicationContext(),
 					"Click ListItem Number " + readid, Toast.LENGTH_LONG)
 					.show(); */
-			
+
 			Intent nextScreen = new Intent(getApplicationContext(), DynamicChunkActivity.class);
 
 			//Sending data to another Activity
+			nextScreen.putExtra("totalChunks", (String) o.get("totalChunks").toString());
 			nextScreen.putExtra("readingId", readid);
 			nextScreen.putExtra("id", (String) o.get("currentChunk").toString());
-			
+
+
 			// starting new activity
 			startActivity(nextScreen);
 
@@ -131,11 +146,13 @@ public class DynamicList extends ListActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		
-		
-
 	}
+	
+	private void refreshList() {
+		String [] home_req_array = {"mode", "getReadings", "fbid", fbid};
+		new DownloadReadingsTask().execute(home_req_array);
+	}
+	
 	//METHOD WHICH WILL HANDLE DYNAMIC INSERTION
 	public void addItems(View v) {
 		listItems.add("Clicked : "+clickCounter++);
@@ -148,5 +165,12 @@ public class DynamicList extends ListActivity {
 		adapter.notifyDataSetChanged();
 	}
 
+	@Override
+	public void onBackPressed() {
+		Intent startMain = new Intent(Intent.ACTION_MAIN);
+		startMain.addCategory(Intent.CATEGORY_HOME);
+		startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(startMain);
+	}
 
 }

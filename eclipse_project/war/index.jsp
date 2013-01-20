@@ -75,10 +75,10 @@
 					We support PDF and text documents, as well as any web page on the Internet.
 			</div>
 			<h2>Start Reading.</h2>
-			<p>The usual BS about how hard reading is and how we're here to
-				help you. Truth is, we just want to win PennApps. And that I know no
-				one will actually read this thing.</p>
-			
+            <p>
+                Who wants to read academic papers? For those of you who are slighlty lazy (no worries, I'm definitely in your boat), here's a sweet app to help guide you in the right direction.  Woodchuck breaks down the text into smaller, more manageable bites and sends it to you via text or Android app. Feel free to login and try it out!
+            </p>
+					
 			<div class="clear"></div>
 
 			<div id="content">

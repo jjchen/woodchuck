@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, WoodchuckActivity!</string>
+    <string name="hello">Woodchuck</string>
     <string name="app_name">Woodchuck</string>
     <string name="dynamic_list">All Readings</string>
-    <string name="dynamic_chunk_activity">DynamicChunkActivity</string>
+    <string name="dynamic_chunk_activity">Chunk</string>
     <string name="empty">Nothing here!  Sorry!</string>
+    <string name="app_id">457817960938308</string>
+
+    <style name="petershadow">
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
 
 </resources>
