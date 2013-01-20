@@ -16,7 +16,9 @@ public class Reading {
 	public long user;
 	public Date createdDate;
 	public Date dueDate; // defaults to 7 days from now
-	
+	public Date lastSent = createdDate;
+	public int frequency;
+
 	int currentChunk = 0;
 	int chunkSize = 2; // # of sentences in each chunk
 	int totalChunks = 0; // 0 = file not ready

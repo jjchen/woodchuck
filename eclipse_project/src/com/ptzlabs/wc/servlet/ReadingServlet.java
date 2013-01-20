@@ -124,6 +124,11 @@ public class ReadingServlet extends HttpServlet {
 
 				blobStoreService.delete(blobKey);
 			}
+
+			int frequency = getFrequency(reading);
+			reading.frequency = frequency;
+			ofy().save().entity(reading).now();
+			
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
 		}
@@ -181,4 +186,13 @@ public class ReadingServlet extends HttpServlet {
 	public static Reading get(long id) {
 		return ofy().load().type(Reading.class).id(id).get();
 	}
+
+	public static int getFrequency(Reading reading) {
+        int days = 7;
+        int hoursInDay = 10;
+        int totalHours = days * hoursInDay;
+        int totalMinutes = totalHours * 60;
+        int frequency = totalMinutes / reading.totalChunks;
+        return frequency;
+    }
 }
