@@ -10,11 +10,11 @@ import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class User {
-	@Id Long id;
-	@Index long fbid;
-	String name;
-	String email;
-	int phone;
+	public @Id Long id;
+	public @Index long fbid;
+	public String name;
+	public String email;
+	public String phone;
 	
 	private User() { }
 	
@@ -25,6 +25,7 @@ public class User {
 	}
 	
 	public static User getUser(long fbid) {
+		if(getUsers(fbid) == null) { return null; }
 		return getUsers(fbid).get(0);
 	}
 	

@@ -18,6 +18,24 @@
 	</servlet-mapping>
 	
 	<servlet>
+	  <servlet-name>Reading</servlet-name>
+	  <servlet-class>com.ptzlabs.wc.servlet.ReadingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>Reading</servlet-name>
+	  <url-pattern>/reading</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	  <servlet-name>Chunk</servlet-name>
+	  <servlet-class>com.ptzlabs.wc.servlet.ChunkServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>Chunk</servlet-name>
+	  <url-pattern>/chunk</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	  <servlet-name>SystemServiceServlet</servlet-name>
 	  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 	  <init-param>
@@ -36,9 +54,17 @@
 	  <load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	
+	<servlet>
+  		<servlet-name>TwilioServlet</servlet-name>
+	    <servlet-class>com.ptzlabs.wc.servlet.TwilioServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>TwilioServlet</servlet-name>
+	    <url-pattern>/twilio</url-pattern>
+	</servlet-mapping>
+
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
  
  

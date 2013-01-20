@@ -1,0 +1,234 @@
+html, body {
+	font-family: "Helvetica Neue";
+	font-weight: 300;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+	
+	color: #f8f8f8;
+	text-align: center;
+}
+
+h1 {
+	font-family: "Oswald";
+	margin: 20px 0px;
+	text-align: left;
+	font-weight: 400;
+	width: auto;
+	width: 400px;
+	float: left;
+}
+
+h2 {
+	font-family: "Oswald";
+	margin: 20px 0px 0px;
+	font-size: 30px;
+	font-weight: 400;
+	text-transform: uppercase;
+	color: #965A06;
+	line-height: 20px;
+}
+
+div#container {
+	width: 900px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+div#username {
+	float: right;
+	with: 200px;
+	margin-top: 30px;
+	padding: 10px;
+	color: #aaa;
+	display: none;
+}
+
+div#username img {
+	box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+	margin-top: -20px;
+}
+
+div#username a {
+	color: inherit;
+	-webkit-transition: 0.3s color;
+}
+
+div#username a:hover {
+	color: #fff;
+}
+
+#wrapper {
+	background: rgba(255, 255, 255, 0.85);
+	text-align: left;
+	padding: 20px;
+	border: 1px solid #999;
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	
+	color: #333;
+}
+
+#wrapper p {
+	font-size: 15px;
+	line-height: 20px;	
+}
+
+#content {
+	border-top: 1px solid #ccc;
+	padding-top: 20px;
+}
+
+#content #left {
+	width: 520px;
+	float: left;
+}
+
+#content #left ul#reading_list {
+	padding: 10px 0 2px;
+	margin: 0;
+	border-left: 2px solid #965A06; 
+	list-style: none;
+}
+
+#content #left ul#reading_list li {
+	padding: 10px;
+	background: rgba(255, 255, 255, 0.7);
+	box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 8px;
+	cursor: pointer;
+	width: 500px;
+	
+	-webkit-transition: 0.1s background, 0.3s padding;
+}
+
+#content #left ul#reading_list li.active {
+	padding-left: 30px;
+	background: rgba(255,255,255, 0.9);
+}
+
+#content #left ul#reading_list li:hover {
+	background: rgba(255,255,255, 0.9);
+}
+
+#content #left ul#reading_list li h4 {
+	font-family: "Oswald";
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size: 20px;
+	margin: 0 5px 0 0;
+	padding: 0;
+	float: left;
+	display: inline-block;
+}
+
+#content #left ul#reading_list li.loading h4 {
+	color: #ccc;
+	text-shadow: none;
+}
+
+#content #left ul#reading_list li .reading_due_date{
+	float: left;
+	display: inline-block;
+	margin-top: 9px;
+	font-size: 14px;
+}
+
+#content #left ul#reading_list li .reading_chunks {
+	float: right;
+	font-size: 15px;
+	font-weight: bold;
+	color: #ccc;
+	text-shadow: none;
+}
+
+#content #left ul#reading_list li .reading_chunks .completed {
+	font-size: 25px;
+	color: #aaa;
+}
+
+#content #left ul#reading_list li p {
+	font-size: 13px;
+	color: #999;
+	text-shadow: none;
+	margin: 0;
+	padding: 0;
+}
+
+#content #right {
+	width: 300px;
+	float: right;
+}
+
+#content #right #reading_details {
+	/* padding: 15px;
+	background: rgba(255, 242, 222, 0.8);
+	border: 1px solid #EDCF9F;
+	*/
+	border-left: 1px solid #aaa;
+	padding-left: 20px;
+}
+
+#content #right #reading_details h4 {
+	font-size: 25px;
+	color: #965A06;
+	margin: 10px 0 0 0;
+	border-bottom: 1px solid #C7801E; 
+	padding: 0;
+	font-family: "Oswald";
+	font-weight: 400;
+}
+
+
+div.filepicker_form {
+	background: #EDCC9F;
+	padding: 10px;
+	border: 1px #E69A30 solid;
+	margin-left: 20px;
+	font-size: 13px;
+	text-shadow: none;
+	width: 230px;
+	margin-bottom: 10px;
+}
+
+button.filepicker_button {
+	padding: 30px 10px;
+	background-color: #ee432e;
+	background-image: -webkit-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: -moz-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: -ms-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: -o-linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	background-image: linear-gradient(top, #B36800 0%, #AB6607 50%, #965A06 50%, #633B03 100%);
+	border: 1px solid #593503;
+	/* border-radius: 5px; */
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4), 0 1px 3px #333333;
+	box-shadow: inset 0px 0px 0px 1px rgba(255, 115, 100, 0.4), 0 1px 3px #333333;
+	color: #fff;
+	font: 20px/1 "Oswald";
+	padding: 12px 0 14px 0;
+	text-align: center;
+	text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+	width: 100%;
+	display: block;
+	margin-bottom: 10px;
+	
+	cursor: pointer;
+	
+	-webkit-transition: 0.2s opacity;
+}
+
+button.filepicker_button:hover {
+	opacity: 0.8;
+}
+
+a {
+	color: #B36800;
+	text-decoration: none;
+}
+
+.right {
+	float: right;
+}
+
+.clear {
+	clear: both;
+}

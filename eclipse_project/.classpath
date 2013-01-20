@@ -6,6 +6,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-4.0b1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-1.7.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/itextpdf-5.3.5.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/itextpdf-5.3.5-javadoc.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -5,6 +5,8 @@
  */
 
 // Additional JS functions here
+var fbid = 701479008; 
+
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '457817960938308', // App ID
@@ -18,35 +20,22 @@ window.fbAsyncInit = function() {
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
             // connected
-            
-            /** NOTE: facebook response object will contain this information
-              {
-                status: 'connected',
-                authResponse: {
-                    accessToken: '...',
-                    expiresIn:'...',
-                    signedRequest:'...',
-                    userID:'...'
-                }
-              }
-             ******/
 
-            $.ajax({
-                type: "POST",
-                url: "/login",
-                data: {
-                    userid: response.authResponse.userID,
-                    access_token: response.authResponse.accessToken
-                }
-            }).done(function (msg) {
-                console.log(msg);
-            });
-  
+            sendAccessToken(response);
+            fbid = response.authResponse.userID;
+            
+            $("#username").html('<img src="https://graph.facebook.com/'+fbid+'/picture" />');
+            $("#username").fadeIn(300);
+            
+            getReadings();
+
         } else if (response.status === 'not_authorized') {
             // not_authorized
+        	$("#username").fadein(300);
             login();
         } else {
             // not_logged_in
+        	$("#username").fadein(300);
             login();
         }
     });
@@ -61,3 +50,28 @@ window.fbAsyncInit = function() {
     js.src = "//connect.facebook.net/en_US/all.js";
     ref.parentNode.insertBefore(js, ref);
 }(document));
+
+function login() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            // connected
+        } else {
+            // cancelled
+        }
+    }, {scope: 'email, publish_stream'});
+}
+
+function sendAccessToken(response) {
+	$.ajax({
+        type: "POST",
+        url: "/login",
+        data: {
+            userid: response.authResponse.userID,
+            access_token: response.authResponse.accessToken
+        }
+    }).done(function (msg) {
+        if(msg != "OK") {
+        	console.log(msg);
+        }
+    });
+}
