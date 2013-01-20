@@ -195,7 +195,9 @@ public class ReadingServlet extends HttpServlet {
 		if(user != null) {
 			List<Reading> readingList = ofy().load().type(Reading.class).filter("user", user.id).list();
 			for(Reading reading : readingList) {
-				reading.currentChunkText = reading.getCurrentChunk().data;
+				if(reading.getCurrentChunk() != null) {
+					reading.currentChunkText = reading.getCurrentChunk().data;
+				}
 			}
 			return readingList;
 		} else {
