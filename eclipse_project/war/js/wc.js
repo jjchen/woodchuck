@@ -23,10 +23,11 @@ function getReadings(loadingBox) {
 			}
 			
 			$("ul#reading_list li").click(function() {
+				var id = parseInt($(this).attr("id").substring(7));
 				$("ul#reading_list li").removeClass("active");
 				$(this).addClass("active");
 				
-				$("#reading_details h4").html("Test");
+				$("#reading_details h4").html(readings[id].name);
 			});
 		});
 	});
