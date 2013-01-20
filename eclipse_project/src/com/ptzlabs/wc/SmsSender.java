@@ -26,10 +26,10 @@ public class SmsSender {
 		Chunk chunk = reading.getCurrentChunk();
 		if (chunk == null) return;
 
-	    try {
-   /* 	    URL url = new URL("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
+/*	    try {
+    	    URL url = new URL("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
     	    	+ACCOUNT_SID+"/SMS/Messages");
-*/
+
 			 URL url = new URL("https://api.twilio.com/2010-04-01/Accounts/"
     	    	+ACCOUNT_SID+"/SMS/Messages");
 			
@@ -60,7 +60,7 @@ public class SmsSender {
         } catch (IOException e) {
             // ...
         }
-        /*
+*/        
 		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
  
         Account account = client.getAccount();
@@ -76,6 +76,6 @@ public class SmsSender {
         smsParams.put("From", "+13238440271"); // Replace with a valid phone
         // number in your account
         smsParams.put("Body", chunk.data);
-        Sms sms = smsFactory.create(smsParams); */
+        Sms sms = smsFactory.create(smsParams); 
     }
 }
