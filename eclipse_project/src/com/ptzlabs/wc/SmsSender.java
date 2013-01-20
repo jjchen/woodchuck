@@ -19,7 +19,7 @@ public class SmsSender {
 		try {
 			URL url = new URL("https://ptzlabs.com/twilio/send.php");
 
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+/*			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			String urlParams = "number=" + String.valueOf(user.phone) + "&data=" + chunk.data;
 			
 			connection.setDoOutput(true);
@@ -31,8 +31,26 @@ public class SmsSender {
 			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 			writer.write(urlParams);
 			writer.flush();
-			writer.close();
-			connection.disconnect();
+			writer.close();*/
+
+
+    URLConnection conn = url.openConnection();
+    conn.setDoOutput(true);
+    OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+
+    writer.write("number=3234919737&data=blargh");
+    writer.flush();
+/*    String line;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    while ((line = reader.readLine()) != null) {
+      System.out.println(line);
+    } */
+    writer.close();
+//    reader.close();
+
+
+
+			connection.disconnect(); 
 
 		} catch (MalformedURLException e) {
 
