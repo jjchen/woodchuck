@@ -78,7 +78,8 @@ div#username a:hover {
 }
 
 #content #left {
-	width: 620px;
+	width: 520px;
+	float: left;
 }
 
 #content #left ul#reading_list {
@@ -147,6 +148,30 @@ div#username a:hover {
 	padding: 0;
 }
 
+#content #right {
+	width: 320px;
+	float: right;
+}
+
+#content #right #reading_details {
+	/* padding: 15px;
+	background: rgba(255, 242, 222, 0.8);
+	border: 1px solid #EDCF9F;
+	*/
+	border-left: 1px solid #aaa;
+	padding-left: 20px;
+}
+
+#content #right #reading_details h4 {
+	font-size: 25px;
+	color: #965A06;
+	margin: 10px 0 0 0;
+	padding: 0;
+	font-family: "Oswald";
+	font-weight: 400;
+}
+
+
 div.filepicker_form {
 	background: #EDCC9F;
 	padding: 10px;
@@ -154,6 +179,8 @@ div.filepicker_form {
 	margin-left: 20px;
 	font-size: 13px;
 	text-shadow: none;
+	width: 230px;
+	margin-bottom: 10px;
 }
 
 button.filepicker_button {
@@ -173,7 +200,7 @@ button.filepicker_button {
 	padding: 12px 0 14px 0;
 	text-align: center;
 	text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
-	width: 200px;
+	width: 100%;
 	display: block;
 	margin-bottom: 10px;
 	

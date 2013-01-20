@@ -71,19 +71,29 @@
 					data-fp-mimetypes="text/*,application/pdf"
 					data-fp-container="modal" data-fp-multiple="true"
 					data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL"
-					onchange="filePickerResp(event)" /> Or, <a href="#">specify a
-					link</a>.
+					onchange="filePickerResp(event)" />
+					We support PDF and text documents, as well as any web page on the Internet.
 			</div>
 			<h2>Start Reading.</h2>
 			<p>The usual BS about how hard reading is and how we're here to
 				help you. Truth is, we just want to win PennApps. And that I know no
 				one will actually read this thing.</p>
+			
+			<div class="clear"></div>
 
 			<div id="content">
 				<div id="left">
 					<ul id="reading_list">
 					</ul>
 				</div>
+				<div id="right">
+					<div id="reading_details">
+						<h4></h4>
+						<div></div>
+					</div>
+				</div>
+				
+				<div class="clear"></div>
 			</div>
 
 		</div>

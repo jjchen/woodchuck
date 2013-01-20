@@ -32,7 +32,7 @@ function generateLoadingBox() {
 }
 
 
-function generateReadingBox(id, name, dueDate, chunkCompleted, chunkTotal, chunkTest) {
+function generateReadingBox(id, name, dueDate, chunkCompleted, chunkTotal, chunkText) {
 	return '<li class="reading" style="display: none;" id="reading' + id + '"> \
 		<h4>' + name + '</h4> \
 		<div class="reading_due_date">' + getTimeDiff(new Date(dueDate)) + '</div> \
