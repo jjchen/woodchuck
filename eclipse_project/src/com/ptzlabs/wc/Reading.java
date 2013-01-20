@@ -20,7 +20,7 @@ public class Reading {
 	@Index public long user;
 	public Date createdDate;
 	@Index public Date dueDate; // defaults to 7 days from now
-	public Date lastSent = createdDate;
+	public Date lastSent;
 	public int frequency;
 
 	public int currentChunk = 0;
@@ -34,6 +34,7 @@ public class Reading {
 		this.user = User.getUser(fbid).id;
 		
 		createdDate = new Date();
+		lastSent = createdDate;
 		// now + 7 days
 		dueDate = new Date(createdDate.getTime() + 604800000);
 	}
@@ -43,6 +44,7 @@ public class Reading {
 		this.user = User.getUser(fbid).id;
 		
 		createdDate = new Date();
+		lastSent = createdDate;
 		this.dueDate = dueDate;
 	} 
 	
