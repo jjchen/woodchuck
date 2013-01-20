@@ -26,8 +26,12 @@ public class SmsSender {
 		if (chunk == null) return;
 
 	    try {
-    	    URL url = new URL("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
+   /* 	    URL url = new URL("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
     	    	+ACCOUNT_SID+"/SMS/Messages");
+*/
+			 URL url = new URL("https://"api.twilio.com/2010-04-01/Accounts/"
+    	    	+ACCOUNT_SID+"/SMS/Messages");
+
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
