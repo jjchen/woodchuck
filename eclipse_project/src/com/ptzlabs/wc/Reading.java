@@ -19,11 +19,13 @@ public class Reading {
 	public String name;
 	@Index public long user;
 	public Date createdDate;
-	public Date dueDate; // defaults to 7 days from now
-	
-	int currentChunk = 0;
-	int chunkSize = 2; // # of sentences in each chunk
-	int totalChunks = 0; // 0 = file not ready
+	@Index public Date dueDate; // defaults to 7 days from now
+	public Date lastSent = createdDate;
+	public int frequency;
+
+	public int currentChunk = 0;
+	public int chunkSize = 2; // # of sentences in each chunk
+	public int totalChunks = 0; // 0 = file not ready
 	
 	private Reading() { }
 	
