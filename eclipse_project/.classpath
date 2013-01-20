@@ -8,6 +8,5 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/itextpdf-5.3.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/itextpdf-5.3.5-javadoc.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/twilio4j-1.0.4.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

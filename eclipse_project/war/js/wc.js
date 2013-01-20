@@ -89,5 +89,5 @@ $(document).ready(function() {
 		$(this).addClass("active");
 		
 		$("#reading_details h4").html("Test");
-	})
+	});
 });

@@ -3,15 +3,14 @@ package com.ptzlabs.wc;
 // Download the twilio-java library from http://twilio.com/docs/libraries
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.google.appengine.repackaged.com.google.common.util.Base64;
+import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
+import com.twilio.sdk.resource.factory.SmsFactory;
+import com.twilio.sdk.resource.instance.Account;
+import com.twilio.sdk.resource.instance.Sms;
  
 public class SmsSender {
  
@@ -64,11 +63,6 @@ public class SmsSender {
 		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
  
         Account account = client.getAccount();
-
-		User user = ofy().load().type(User.class).id(reading.user).get();
-		Chunk chunk = reading.getCurrentChunk();
-		if (chunk == null) return;
-		
 
         SmsFactory smsFactory = account.getSmsFactory();
         Map<String, String> smsParams = new HashMap<String, String>();
