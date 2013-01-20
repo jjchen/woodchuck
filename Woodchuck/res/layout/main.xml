@@ -3,13 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" 
+    android:background="@drawable/books" 
     android:id="@+id/homepage" >
 
     <TextView
+        android:id="@+id/main_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
-    
-
+        android:text="@string/hello"
+        android:textSize="45dp" />
 
 </LinearLayout>

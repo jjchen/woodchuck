@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class ObjectAdapter<String> extends ArrayAdapter<String> {
 				e.printStackTrace();
 			}
 		}
-
+		
 		return rowView;
 	}
 	
