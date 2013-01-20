@@ -21,13 +21,13 @@ function getReadings(loadingBox) {
 				$("ul#reading_list").append(generateReadingBox(r.id, r.name, r.dueDate, r.currentChunk, r.totalChunks, r.currentChunkText));
 				$("ul#reading_list li#reading" + r.id).fadeIn(200);
 			}
-		});
-		
-		$("ul#reading_list li").click(function() {
-			$("ul#reading_list li").removeClass("active");
-			$(this).addClass("active");
 			
-			$("#reading_details h4").html("Test");
+			$("ul#reading_list li").click(function() {
+				$("ul#reading_list li").removeClass("active");
+				$(this).addClass("active");
+				
+				$("#reading_details h4").html("Test");
+			});
 		});
 	});
 	
