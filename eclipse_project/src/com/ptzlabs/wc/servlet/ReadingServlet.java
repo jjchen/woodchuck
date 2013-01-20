@@ -193,7 +193,11 @@ public class ReadingServlet extends HttpServlet {
 	public static List<Reading> getReadings(long fbid) {
 		User user = User.getUser(fbid);
 		if(user != null) {
-			return ofy().load().type(Reading.class).filter("user", user.id).list();
+			List<Reading> readingList = ofy().load().type(Reading.class).filter("user", user.id).list();
+			for(Reading reading : readingList) {
+				reading.currentChunkText = reading.getCurrentChunk().data;
+			}
+			return readingList;
 		} else {
 			return null;
 		}

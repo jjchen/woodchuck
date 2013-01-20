@@ -10,7 +10,7 @@ public class Chunk {
 	@Id long id;
 	@Parent Key<Reading> reading;
 	boolean isRead = false;
-	String data;
+	public String data;
 	
 	private Chunk() { }
 

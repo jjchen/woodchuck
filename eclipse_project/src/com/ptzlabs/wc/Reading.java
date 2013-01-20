@@ -7,6 +7,7 @@ import java.util.Date;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 
 /**
@@ -26,6 +27,8 @@ public class Reading {
 	public int currentChunk = 1;
 	public int chunkSize = 2; // # of sentences in each chunk
 	public int totalChunks = 0; // 0 = file not ready
+	
+	@Ignore public String currentChunkText;
 	
 	private Reading() { }
 	
