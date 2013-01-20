@@ -1,11 +1,15 @@
+package com.ptzlabs.wc;
+
 // Download the twilio-java library from http://twilio.com/docs/libraries
-import java.util.Map;
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
 import java.util.HashMap;
- 
-import com.twilio.sdk.resource.instance.Account;
+import java.util.Map;
+
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.SmsFactory;
+import com.twilio.sdk.resource.instance.Account;
 import com.twilio.sdk.resource.instance.Sms;
  
 public class SmsSender {
@@ -19,7 +23,7 @@ public class SmsSender {
  
         Account account = client.getAccount();
 
-		User user = ofy().load().type(User.classes).id(reading.user).get();
+		User user = ofy().load().type(User.class).id(reading.user).get();
 		Chunk chunk = reading.getCurrentChunk();
 		if (chunk == null) return;
 		reading.nextChunk();
@@ -27,7 +31,7 @@ public class SmsSender {
 
         SmsFactory smsFactory = account.getSmsFactory();
         Map<String, String> smsParams = new HashMap<String, String>();
-        smsParams.put("To", user.getphoneNumber); 
+        smsParams.put("To", String.valueOf(user.phone)); 
         smsParams.put("From", "+13238440271"); // Replace with a valid phone
         // number in your account
         smsParams.put("Body", chunk.data);
