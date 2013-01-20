@@ -23,7 +23,15 @@ function getReadings(loadingBox) {
 			}
 		});
 		
+		$("ul#reading_list li").click(function() {
+			$("ul#reading_list li").removeClass("active");
+			$(this).addClass("active");
+			
+			$("#reading_details h4").html("Test");
+		});
 	});
+	
+	
 }
 
 function generateLoadingBox() {
@@ -82,12 +90,3 @@ function getTimeDiffDescription(diff, unit, timeDivisor) {
 		return null;
 	}
 }
-
-$(document).ready(function() {
-	$("ul#reading_list li").click(function() {
-		$("ul#reading_list li").removeClass("active");
-		$(this).addClass("active");
-		
-		$("#reading_details h4").html("Test");
-	});
-});
