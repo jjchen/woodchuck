@@ -23,7 +23,7 @@ public class Reading {
 	public Date lastSent;
 	public int frequency;
 
-	public int currentChunk = 0;
+	public int currentChunk = 1;
 	public int chunkSize = 2; // # of sentences in each chunk
 	public int totalChunks = 0; // 0 = file not ready
 	

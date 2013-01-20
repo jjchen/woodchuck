@@ -16,14 +16,16 @@ import com.twilio.sdk.TwilioRestException;
 public class TwilioServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Date currentDate = new Date();
-		List<Reading> readingList = ofy().load().type(Reading.class).filter("dueDate <=", currentDate).list();
+		List<Reading> readingList = ofy().load().type(Reading.class).filter("dueDate >=", currentDate).list();
 		for (Reading reading : readingList) {
-			if (reading.lastSent.getTime() + reading.frequency >= currentDate.getTime()) {
+			if (reading.lastSent.getTime() + reading.frequency * 60000 <= currentDate.getTime()) {
 				try {
 					SmsSender.sendChunk(reading);
 				} catch (TwilioRestException e) {
 					e.printStackTrace();
 				}
+				
+				reading.nextChunk();
 				reading.lastSent = currentDate;
 				ofy().save().entity(reading).now();
 			}

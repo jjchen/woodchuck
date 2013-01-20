@@ -26,7 +26,6 @@ public class SmsSender {
 		User user = ofy().load().type(User.class).id(reading.user).get();
 		Chunk chunk = reading.getCurrentChunk();
 		if (chunk == null) return;
-		reading.nextChunk();
 		
 
         SmsFactory smsFactory = account.getSmsFactory();
