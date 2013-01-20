@@ -45,7 +45,15 @@
 	  <load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	
+	<servlet>
+  		<servlet-name>TwilioServlet</servlet-name>
+	    <servlet-class>com.ptzlabs.wc.servlet.TwilioServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>TwilioServlet</servlet-name>
+	    <url-pattern>/twilio</url-pattern>
+	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+<cron>
+<url>/twilio</url>
+<description>Check readings for Twilio every 1 minute</description>
+<schedule>every 1 minutes</schedule>
+</cron>
+</cronentries>
