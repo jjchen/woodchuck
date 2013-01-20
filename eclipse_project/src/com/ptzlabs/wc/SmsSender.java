@@ -4,9 +4,9 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class SmsSender {
 
@@ -50,7 +50,7 @@ public class SmsSender {
 
 
 
-			connection.disconnect(); 
+			
 
 		} catch (MalformedURLException e) {
 

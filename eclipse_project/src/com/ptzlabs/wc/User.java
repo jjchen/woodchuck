@@ -14,7 +14,7 @@ public class User {
 	public @Index long fbid;
 	public String name;
 	public String email;
-	public int phone;
+	public String phone;
 	
 	private User() { }
 	
