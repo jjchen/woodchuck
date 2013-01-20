@@ -31,10 +31,13 @@ public class SmsSender {
 */
 			 URL url = new URL("https://"api.twilio.com/2010-04-01/Accounts/"
     	    	+ACCOUNT_SID+"/SMS/Messages");
+			
+			String userPassword = ACCOUNT_SID + ":" + AUTH_TOKEN;
+			String encoding = new sun.misc.BASE64Encoder().encode(userPassword.getBytes());
+			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true);
+			connection.setRequestProperty("Authorization", "Basic " + encoding);
 
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Accept", "application/json");
             connection.setRequestMethod("POST");
