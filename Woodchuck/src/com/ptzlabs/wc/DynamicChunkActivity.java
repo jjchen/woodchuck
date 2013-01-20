@@ -160,16 +160,16 @@ public class DynamicChunkActivity extends Activity implements SimpleGestureListe
 			/* Toast msg3 = Toast.makeText(DynamicChunkActivity.this, "swiping right", Toast.LENGTH_LONG);
 			msg3.show(); */
 			
-			nextPage(1);
+			// nextPage(-1);
 
 			// your_function();
 			break;
 		default:
 			// other function going backwrads
 			/* Toast msg2 = Toast.makeText(DynamicChunkActivity.this, "swiping left", Toast.LENGTH_LONG);
-			msg2.show();
+			msg2.show(); */
 
-			nextPage(-1); */
+			nextPage(1);
 
 			break;
 		}
