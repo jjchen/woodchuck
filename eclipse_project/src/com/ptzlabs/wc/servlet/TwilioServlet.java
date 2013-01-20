@@ -25,6 +25,7 @@ public class TwilioServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				reading.lastSent = currentDate;
+				ofy().save().entity(reading).now();
 			}
 		}
 
