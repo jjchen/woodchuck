@@ -3,14 +3,20 @@ package com.ptzlabs.wc;
 // Download the twilio-java library from http://twilio.com/docs/libraries
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.twilio.sdk.TwilioRestClient;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import com.twilio.sdk.TwilioRestException;
-import com.twilio.sdk.resource.factory.SmsFactory;
-import com.twilio.sdk.resource.instance.Account;
-import com.twilio.sdk.resource.instance.Sms;
  
 public class SmsSender {
  
@@ -28,16 +34,16 @@ public class SmsSender {
 
 	    try {
     	    HttpPost request = new HttpPost("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
-    	    	+ACCOUNT_SID+"/SMS/Messages);
+    	    	+ACCOUNT_SID+"/SMS/Messages");
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
     		nameValuePairs.add(new BasicNameValuePair("Body", chunk.data));
-    		nameValuePairs.add(new BasicNameValuePair("To", String.valueOf(user.phone));
+    		nameValuePairs.add(new BasicNameValuePair("To", String.valueOf(user.phone)));
     		nameValuePairs.add(new BasicNameValuePair("From",  "+13238440271"));    		
-    		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+    		request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
     		// Execute HTTP Post Request
-   	 		HttpResponse response = httpclient.execute(httppost);
+   	 		HttpResponse response = httpClient.execute(request);
 
 		} catch (ClientProtocolException e) {
     		// TODO Auto-generated catch block
