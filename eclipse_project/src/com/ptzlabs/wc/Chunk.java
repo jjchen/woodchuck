@@ -10,8 +10,8 @@ public class Chunk {
 	@Id long id;
 	@Parent Key<Reading> reading;
 	boolean isRead = false;
-	boolean highlight = false;
-	String note = "";
+	public boolean highlight = false;
+	public String note = "";
 	public String data;
 	
 	private Chunk() { }
