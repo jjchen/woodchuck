@@ -33,8 +33,8 @@ public class SmsSender {
     	    	+ACCOUNT_SID+"/SMS/Messages");
 			
 			String userPassword = ACCOUNT_SID + ":" + AUTH_TOKEN;
-			String encoding = new sun.misc.BASE64Encoder().encode(userPassword.getBytes());
-			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+			String encoding = Base64.encode(userPassword);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Authorization", "Basic " + encoding);
 
