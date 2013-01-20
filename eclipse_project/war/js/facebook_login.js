@@ -26,18 +26,9 @@ window.fbAsyncInit = function() {
             
             $("#username").html('<img src="https://graph.facebook.com/'+fbid+'/picture" />');
             $("#username").fadeIn(300);
+            
+            getReadings();
 
-            $.ajax({
-    			type : "POST",
-    			url : "/reading",
-    			data : {
-    				mode : "get",
-    				id : 25001
-    			}
-    		}).done(function(msg) {
-    			console.log(msg);
-    		});
-  
         } else if (response.status === 'not_authorized') {
             // not_authorized
         	$("#username").fadein(300);
