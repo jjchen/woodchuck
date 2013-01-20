@@ -25,6 +25,7 @@ public class User {
 	}
 	
 	public static User getUser(long fbid) {
+		if(getUsers(fbid) == null) { return null; }
 		return getUsers(fbid).get(0);
 	}
 	

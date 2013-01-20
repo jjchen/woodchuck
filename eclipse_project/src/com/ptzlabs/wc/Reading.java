@@ -7,6 +7,7 @@ import java.util.Date;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 /**
  * Uses @Parent in Chunk solely to keep track of data 
@@ -16,7 +17,7 @@ public class Reading {
 	@Id
 	public Long id;
 	public String name;
-	public long user;
+	@Index public long user;
 	public Date createdDate;
 	public Date dueDate; // defaults to 7 days from now
 	
