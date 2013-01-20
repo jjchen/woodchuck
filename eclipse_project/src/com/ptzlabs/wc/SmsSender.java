@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class SmsSender {
 
@@ -21,18 +20,19 @@ public class SmsSender {
 			URL url = new URL("https://ptzlabs.com/twilio/send.php");
 
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			String urlParams = "number=" + String.valueOf(user.phone) + "&data=" + chunk.data;
+			
 			connection.setDoOutput(true);
 
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setRequestProperty("Accept", "application/json");
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			connection.setRequestProperty("charset", "utf-8");
 			connection.setRequestMethod("POST");
-
-			String message = URLEncoder.encode("{\"number\":\"" + String.valueOf(user.phone) + "\"," +
-					"\"data\":\"" + chunk.data + "\"}", "UTF-8");
-
+		
 			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			writer.write(message);
+			writer.write(urlParams);
+			writer.flush();
 			writer.close();
+			connection.disconnect();
 
 		} catch (MalformedURLException e) {
 
