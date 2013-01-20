@@ -52,7 +52,7 @@ public class Reading {
 	} 
 	
 	public void nextChunk() {
-		if(currentChunk < totalChunks) {
+		if(currentChunk + 1 < totalChunks) {
 			currentChunk++;
 		}
 	}
