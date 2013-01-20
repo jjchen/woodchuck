@@ -19,7 +19,33 @@ public class SmsSender {
     public static final String AUTH_TOKEN = "4455aefcaf4e8146541c85c2bca963d8";
  
     public static void sendChunk(Reading reading) throws TwilioRestException {
-        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+
+ 		HttpClient httpClient = new DefaultHttpClient();
+		
+		User user = ofy().load().type(User.class).id(reading.user).get();
+		Chunk chunk = reading.getCurrentChunk();
+		if (chunk == null) return;
+
+	    try {
+    	    HttpPost request = new HttpPost("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
+    	    	+ACCOUNT_SID+"/SMS/Messages);
+
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+    		nameValuePairs.add(new BasicNameValuePair("Body", chunk.data));
+    		nameValuePairs.add(new BasicNameValuePair("To", String.valueOf(user.phone));
+    		nameValuePairs.add(new BasicNameValuePair("From",  "+13238440271"));    		
+    		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+    		// Execute HTTP Post Request
+   	 		HttpResponse response = httpclient.execute(httppost);
+
+		} catch (ClientProtocolException e) {
+    		// TODO Auto-generated catch block
+		} catch (IOException e) {
+    		// TODO Auto-generated catch block
+		}
+		/*
+		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
  
         Account account = client.getAccount();
 
@@ -34,6 +60,6 @@ public class SmsSender {
         smsParams.put("From", "+13238440271"); // Replace with a valid phone
         // number in your account
         smsParams.put("Body", chunk.data);
-        Sms sms = smsFactory.create(smsParams);
+        Sms sms = smsFactory.create(smsParams); */
     }
 }
