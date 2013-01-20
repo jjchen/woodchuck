@@ -28,7 +28,7 @@
 				type : type,
 			}
 		}).done(function(msg) {
-				console.log(msg);
+			console.log(msg);
 		});
 	}
 	$("document").ready(function() {
@@ -61,23 +61,54 @@
 
 	<div id="container">
 		<h1>Woodchuck</h1>
-		<span class="right" id="username"></span>
+		<div id="username"><a href="javascript:void(0)">not logged in.</a></div>
+		<div class="clear"></div>
 
 		<div id="wrapper">
 			<div class="filepicker_form right">
-				<input type="filepicker" class="filepicker_button" data-fp-apikey="ArDRHUpYoQQ6Yg5Qsmoxbz"
+				<input type="filepicker" class="filepicker_button"
+					data-fp-apikey="ArDRHUpYoQQ6Yg5Qsmoxbz"
 					data-fp-mimetypes="text/*,application/pdf"
 					data-fp-container="modal" data-fp-multiple="true"
 					data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL"
-					onchange="filePickerResp(event)" />
-				Or, <a href="#">specify a link</a>.
+					onchange="filePickerResp(event)" /> Or, <a href="#">specify a
+					link</a>.
 			</div>
 			<h2>Start Reading.</h2>
 			<p>The usual BS about how hard reading is and how we're here to
 				help you. Truth is, we just want to win PennApps. And that I know no
 				one will actually read this thing.</p>
 
-			
+			<div id="content">
+				<div id="left">
+					<ul id="reading_list">
+						<li class="reading">
+							<h4>Reading Item</h4>
+							<div class="reading_due_date">7 days</div>
+							<div class="reading_chunks"><span class="completed">6</span>/<span class="total">20</span></div>
+							<div class="clear"></div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla risus. </p>
+						</li>
+						
+						<li class="reading">
+							<h4>Reading Item</h4>
+							<div class="reading_due_date">7 days</div>
+							<div class="reading_chunks"><span class="completed">6</span>/<span class="total">20</span></div>
+							<div class="clear"></div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla risus. </p>
+						</li>
+						
+						<li class="reading">
+							<h4>Reading Item</h4>
+							<div class="reading_due_date">7 days</div>
+							<div class="reading_chunks"><span class="completed">6</span>/<span class="total">20</span></div>
+							<div class="clear"></div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla risus. </p>
+						</li>
+					</ul>
+				</div>
+			</div>
+
 		</div>
 	</div>
 

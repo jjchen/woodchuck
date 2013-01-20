@@ -20,40 +20,31 @@ window.fbAsyncInit = function() {
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
             // connected
+
+            sendAccessToken(response);
+            fbid = response.authResponse.userID;
             
-            /** NOTE: facebook response object will contain this information
-              {
-                status: 'connected',
-                authResponse: {
-                    accessToken: '...',
-                    expiresIn:'...',
-                    signedRequest:'...',
-                    userID:'...'
-                }
-              }
-             ******/
+            $("#username").html('<img src="https://graph.facebook.com/'+fbid+'/picture" />');
+            $("#username").fadeIn(300);
 
             $.ajax({
-                type: "POST",
-                url: "/login",
-                data: {
-                    userid: response.authResponse.userID,
-                    access_token: response.authResponse.accessToken
-                }
-            }).done(function (msg) {
-                if(msg != "OK") {
-                	console.log(msg);
-                }
-            });
-            
-            $("#username").html(response.authResponse.userID);
-            fbid = response.authResponse.userID;
+    			type : "POST",
+    			url : "/reading",
+    			data : {
+    				mode : "get",
+    				id : 25001
+    			}
+    		}).done(function(msg) {
+    			console.log(msg);
+    		});
   
         } else if (response.status === 'not_authorized') {
             // not_authorized
+        	$("#username").fadein(300);
             login();
         } else {
             // not_logged_in
+        	$("#username").fadein(300);
             login();
         }
     });
@@ -77,4 +68,19 @@ function login() {
             // cancelled
         }
     }, {scope: 'email, publish_stream'});
+}
+
+function sendAccessToken(response) {
+	$.ajax({
+        type: "POST",
+        url: "/login",
+        data: {
+            userid: response.authResponse.userID,
+            access_token: response.authResponse.accessToken
+        }
+    }).done(function (msg) {
+        if(msg != "OK") {
+        	console.log(msg);
+        }
+    });
 }

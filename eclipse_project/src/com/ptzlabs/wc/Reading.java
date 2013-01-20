@@ -1,7 +1,10 @@
 package com.ptzlabs.wc;
 
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
 import java.util.Date;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
@@ -54,6 +57,10 @@ public class Reading {
 	
 	public boolean isReady() {
 		return totalChunks > 0;
+	}
+	
+	public Chunk getCurrentChunk() {
+		return ofy().load().key(Key.create(Key.create(Reading.class, id), Chunk.class, currentChunk)).get();
 	}
 	
 	public void setTotalChunks(int newTotal) {
