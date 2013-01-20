@@ -18,6 +18,9 @@
 <link href='assets/style.css' rel='stylesheet'>
 <script type="text/javascript">
 	function sendLink(url, filename, type) {
+		$("ul#reading_list").prepend(generateLoadingBox());
+		$("ul#reading_list .loading").fadeIn(200);
+		
 		$.ajax({
 			type : "POST",
 			url : "/reading",
@@ -30,7 +33,7 @@
 			}
 		}).done(function(msg) {
 			console.log(msg);
-			getReadings();
+			getReadings(false);
 		});
 	}
 	$("document").ready(function() {
@@ -38,25 +41,18 @@
 	});
 
 	function filePickerResp(event) {
-		out = '';
 		for ( var i = 0; i < event.fpfiles.length; i++) {
-
-			var fpfile = {
-				url : event.fpfiles[i].url
-			}
+			var fpfile = { url : event.fpfiles[i].url }
 			filepicker.stat(fpfile, {
 				filename : true,
 				mimetype : true
 			}, function(metadata) {
 				sendLink(fpfile.url, metadata.filename, metadata.mimetype);
 			});
-			out += event.fpfiles[i].url;
-			out += ' ';
 		}
-		alert(out);
 	}
 </script>
-<title>Insert title here</title>
+<title>Woodchuck</title>
 </head>
 <body>
 	<div id="fb-root"></div>

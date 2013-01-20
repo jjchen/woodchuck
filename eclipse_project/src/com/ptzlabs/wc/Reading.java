@@ -62,8 +62,12 @@ public class Reading {
 		return totalChunks > 0;
 	}
 	
+	public Chunk getChunk(int chunkId) {
+		return ofy().load().key(Key.create(Key.create(Reading.class, id), Chunk.class, chunkId)).get();
+	}
+	
 	public Chunk getCurrentChunk() {
-		return ofy().load().key(Key.create(Key.create(Reading.class, id), Chunk.class, currentChunk)).get();
+		return getChunk(currentChunk);
 	}
 	
 	public void setTotalChunks(int newTotal) {

@@ -27,6 +27,15 @@
 	</servlet-mapping>
 	
 	<servlet>
+	  <servlet-name>Chunk</servlet-name>
+	  <servlet-class>com.ptzlabs.wc.servlet.ChunkServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>Chunk</servlet-name>
+	  <url-pattern>/chunk</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	  <servlet-name>SystemServiceServlet</servlet-name>
 	  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 	  <init-param>
