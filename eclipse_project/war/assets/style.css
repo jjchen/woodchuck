@@ -96,8 +96,13 @@ div#username a:hover {
 	border-bottom: 1px solid #ddd;
 	margin-bottom: 8px;
 	cursor: pointer;
+	width: 500px;
 	
-	-webkit-transition: 0.1s background;
+	-webkit-transition: 0.1s background, 0.3s padding;
+}
+
+#content #left ul#reading_list li.active {
+	padding-left: 30px;
 }
 
 #content #left ul#reading_list li:hover {
@@ -149,7 +154,7 @@ div#username a:hover {
 }
 
 #content #right {
-	width: 320px;
+	width: 300px;
 	float: right;
 }
 

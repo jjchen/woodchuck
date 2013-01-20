@@ -1,3 +1,4 @@
+var readings = new Array();
 function getReadings(loadingBox) {
 	if(loadingBox == null) { 
 		$("ul#reading_list").prepend(generateLoadingBox());
@@ -13,9 +14,10 @@ function getReadings(loadingBox) {
 	}).done(function(msg) {
 		$("ul#reading_list li").fadeOut(200, function() {
 			$("ul#reading_list li").remove();
-			var readings = JSON.parse(msg)		
-			for(var i in readings) {
-				var r = readings[i];
+			var readings_tmp = JSON.parse(msg)
+			for(var i in readings_tmp) {
+				var r = readings_tmp[i];
+				readings[r.id] = r;
 				$("ul#reading_list").append(generateReadingBox(r.id, r.name, r.dueDate, r.currentChunk, r.totalChunks, r.currentChunkText));
 				$("ul#reading_list li#reading" + r.id).fadeIn(200);
 			}
@@ -79,5 +81,13 @@ function getTimeDiffDescription(diff, unit, timeDivisor) {
 	} else {
 		return null;
 	}
- 
 }
+
+$(document).ready(function() {
+	$("ul#reading_list li").click(function() {
+		$("ul#reading_list li").removeClass("active");
+		$(this).addClass("active");
+		
+		$("#reading_details h4").html("Test");
+	});
+});
