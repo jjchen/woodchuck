@@ -202,6 +202,10 @@ public class ReadingServlet extends HttpServlet {
 	public static Reading get(long id) {
 		return ofy().load().type(Reading.class).id(id).get();
 	}
+	
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		doPost(req, resp);
+	}
 
 	public static int getFrequency(Reading reading) {
         int days = 7;

@@ -7,6 +7,7 @@ import java.util.Date;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 /**
  * Uses @Parent in Chunk solely to keep track of data 
@@ -16,15 +17,15 @@ public class Reading {
 	@Id
 	public Long id;
 	public String name;
-	public long user;
+	@Index public long user;
 	public Date createdDate;
 	@Index public Date dueDate; // defaults to 7 days from now
 	public Date lastSent = createdDate;
 	public int frequency;
 
-	int currentChunk = 0;
-	int chunkSize = 2; // # of sentences in each chunk
-	int totalChunks = 0; // 0 = file not ready
+	public int currentChunk = 0;
+	public int chunkSize = 2; // # of sentences in each chunk
+	public int totalChunks = 0; // 0 = file not ready
 	
 	private Reading() { }
 	

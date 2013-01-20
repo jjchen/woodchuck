@@ -9,6 +9,7 @@
 	src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript"
 	src="//api.filepicker.io/v1/filepicker.js"></script>
+<script type="text/javascript" src="js/wc.js"></script>
 <script type="text/javascript" src="js/facebook_login.js"></script>
 <script type="text/javascript" src="js/backstretch.js"></script>
 <link
@@ -29,6 +30,7 @@
 			}
 		}).done(function(msg) {
 			console.log(msg);
+			getReadings();
 		});
 	}
 	$("document").ready(function() {
@@ -61,7 +63,9 @@
 
 	<div id="container">
 		<h1>Woodchuck</h1>
-		<div id="username"><a href="javascript:void(0)">not logged in.</a></div>
+		<div id="username">
+			<a href="javascript:void(0)">not logged in.</a>
+		</div>
 		<div class="clear"></div>
 
 		<div id="wrapper">
@@ -82,29 +86,6 @@
 			<div id="content">
 				<div id="left">
 					<ul id="reading_list">
-						<li class="reading">
-							<h4>Reading Item</h4>
-							<div class="reading_due_date">7 days</div>
-							<div class="reading_chunks"><span class="completed">6</span>/<span class="total">20</span></div>
-							<div class="clear"></div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla risus. </p>
-						</li>
-						
-						<li class="reading">
-							<h4>Reading Item</h4>
-							<div class="reading_due_date">7 days</div>
-							<div class="reading_chunks"><span class="completed">6</span>/<span class="total">20</span></div>
-							<div class="clear"></div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla risus. </p>
-						</li>
-						
-						<li class="reading">
-							<h4>Reading Item</h4>
-							<div class="reading_due_date">7 days</div>
-							<div class="reading_chunks"><span class="completed">6</span>/<span class="total">20</span></div>
-							<div class="clear"></div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla risus. </p>
-						</li>
 					</ul>
 				</div>
 			</div>
