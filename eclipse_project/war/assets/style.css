@@ -19,11 +19,12 @@ h1 {
 
 h2 {
 	font-family: "Oswald";
-	margin: 10px 0px 5px;
+	margin: 20px 0px 0px;
 	font-size: 30px;
 	font-weight: 400;
 	text-transform: uppercase;
 	color: #965A06;
+	line-height: 20px;
 }
 
 div#container {
@@ -111,6 +112,11 @@ div#username a:hover {
 	padding: 0;
 	float: left;
 	display: inline-block;
+}
+
+#content #left ul#reading_list li.loading h4 {
+	color: #ccc;
+	text-shadow: none;
 }
 
 #content #left ul#reading_list li .reading_due_date{
