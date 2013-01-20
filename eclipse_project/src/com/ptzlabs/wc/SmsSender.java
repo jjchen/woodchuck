@@ -10,7 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import com.itextpdf.text.pdf.codec.Base64;
+import org.apache.commons.codec.binary.Base64;
 import com.twilio.sdk.TwilioRestException;
  
 public class SmsSender {
@@ -34,7 +34,7 @@ public class SmsSender {
     	    	+ACCOUNT_SID+"/SMS/Messages");
 			
 			String userPassword = ACCOUNT_SID + ":" + AUTH_TOKEN;
-			String encoding = Base64.encode(userPassword);
+			String encoding = Base64.encodeBase64String(userPassword.getBytes());
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Authorization", "Basic " + encoding);
