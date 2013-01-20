@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import com.itextpdf.text.pdf.codec.Base64;
 import com.twilio.sdk.TwilioRestException;
  
 public class SmsSender {
@@ -29,7 +30,7 @@ public class SmsSender {
    /* 	    URL url = new URL("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
     	    	+ACCOUNT_SID+"/SMS/Messages");
 */
-			 URL url = new URL("https://"api.twilio.com/2010-04-01/Accounts/"
+			 URL url = new URL("https://api.twilio.com/2010-04-01/Accounts/"
     	    	+ACCOUNT_SID+"/SMS/Messages");
 			
 			String userPassword = ACCOUNT_SID + ":" + AUTH_TOKEN;
