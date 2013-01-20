@@ -20,31 +20,39 @@ public class SmsSender {
  
     public static void sendChunk(Reading reading) throws TwilioRestException {
 
- 		HttpClient httpClient = new DefaultHttpClient();
 		
 		User user = ofy().load().type(User.class).id(reading.user).get();
 		Chunk chunk = reading.getCurrentChunk();
 		if (chunk == null) return;
 
 	    try {
-    	    HttpPost request = new HttpPost("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
-    	    	+ACCOUNT_SID+"/SMS/Messages);
+    	    URL url = new URL("https://"+ACCOUNT_SID+":"+AUTH_TOKEN+"@api.twilio.com/2010-04-01/Accounts/"
+    	    	+ACCOUNT_SID+"/SMS/Messages");
 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-    		nameValuePairs.add(new BasicNameValuePair("Body", chunk.data));
-    		nameValuePairs.add(new BasicNameValuePair("To", String.valueOf(user.phone));
-    		nameValuePairs.add(new BasicNameValuePair("From",  "+13238440271"));    		
-    		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestMethod("POST");
 
-    		// Execute HTTP Post Request
-   	 		HttpResponse response = httpclient.execute(httppost);
+			String message = URLEncoder.encode("{\"To\":\""+String.valueOf(user.phone)+
+				"\", \"From\":\"+13238440271\",\"Body\":\""+chunk.data+"\"}", "UTF-8");
 
-		} catch (ClientProtocolException e) {
-    		// TODO Auto-generated catch block
-		} catch (IOException e) {
-    		// TODO Auto-generated catch block
-		}
-		/*
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+            writer.write(message);
+            writer.close();
+    
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                // OK
+            } else {
+                // Server returned HTTP error code.
+            }
+        } catch (MalformedURLException e) {
+            // ...
+        } catch (IOException e) {
+            // ...
+        }
+        /*
 		TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
  
         Account account = client.getAccount();
