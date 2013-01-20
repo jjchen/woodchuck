@@ -5,7 +5,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -24,6 +23,7 @@ import com.google.appengine.api.files.FileReadChannel;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
+import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
@@ -126,6 +126,16 @@ public class ReadingServlet extends HttpServlet {
 			}
 			resp.setContentType("text/plain");
 			resp.getWriter().println("OK");
+		
+		} else if (req.getParameter("mode").equals("getReadings") && req.getParameter("fbid") != null) {
+			Gson gson = new Gson();
+			
+			resp.setContentType("text/plain");
+			resp.getWriter().println(gson.toJson(getReadings(Long.parseLong(req.getParameter("fbid")))));
+		} else if (req.getParameter("mode").equals("get") && req.getParameter("id") != null) {
+			Gson gson = new Gson();
+			resp.setContentType("text/plain");
+			resp.getWriter().println(gson.toJson(get(Long.parseLong(req.getParameter("id")))));
 		}
 	}
 	
@@ -175,7 +185,11 @@ public class ReadingServlet extends HttpServlet {
 
 	public static List<Reading> getReadings(long fbid) {
 		User user = User.getUser(fbid);
-		return ofy().load().type(Reading.class).filter("user", user.id).list();
+		if(user != null) {
+			return ofy().load().type(Reading.class).filter("user", user.id).list();
+		} else {
+			return null;
+		}
 	}
 
 	public static Reading get(long id) {
