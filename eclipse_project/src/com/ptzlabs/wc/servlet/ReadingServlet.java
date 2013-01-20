@@ -35,8 +35,10 @@ import com.ptzlabs.wc.User;
 
 public class ReadingServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-		if (req.getParameter("mode").equals("new") && req.getParameter("name") != null
+		if (req.getParameter("mode") == null) { 
+			resp.setContentType("text/plain");
+			resp.getWriter().println("Mode not specified.");
+		} else if (req.getParameter("mode").equals("new") && req.getParameter("name") != null
 				&& req.getParameter("location") != null && req.getParameter("fbid") != null
 				&& req.getParameter("type") != null) {
 
