@@ -38,7 +38,7 @@ public class ChunkServlet extends HttpServlet {
 		if (req.getParameter("mode") == null) { 
 			resp.setContentType("text/plain");
 			resp.getWriter().println("Mode not specified.");
-		} else if (req.getParameter("mode").equals("getChunk") && req.getParameter("id") != null && req.getParameter("readingId") != null) {
+		} else if (req.getParameter("mode").equals("get") && req.getParameter("id") != null && req.getParameter("readingId") != null) {
 			Gson gson = new Gson();
 			resp.setContentType("text/plain");
 			
