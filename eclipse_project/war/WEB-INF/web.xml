@@ -63,6 +63,17 @@
 	    <url-pattern>/twilio</url-pattern>
 	</servlet-mapping>
 
+	<display-name>Twilio SMS App</display-name>
+	<servlet>
+		<servlet-name>TwilioAnsweringServlet</servlet-name>
+		<servlet-class>com.twilio.TwilioServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>TwilioAnsweringServlet</servlet-name>
+		<url-pattern>/sms</url-pattern>
+	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
