@@ -89,7 +89,8 @@
 				<div id="right">
 					<div id="reading_details" style="display: none;">
 						<h4></h4>
-						<div></div>
+						<div id="reading_details_list"></div>
+						<div id="reading_action"></div>
 					</div>
 				</div>
 				

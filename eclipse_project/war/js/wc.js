@@ -27,19 +27,18 @@ function getReadings(loadingBox) {
 				var id = parseInt($(this).attr("id").substring(7));
 				var r = readings[id];
 				
+				clearAction();
+				
 				$("ul#reading_list li").removeClass("active");
 				$(this).addClass("active");
 				
 				$("#reading_details h4").html(r.name);
 				$("#reading_details div").html("");
-				$("#reading_details > div").append(generateReadingMeta("Created on", r.createdDate));
-				$("#reading_details > div").append(generateReadingMeta("Due date", r.dueDate));
-				$("#reading_details > div").append(generateReadingMeta("Notif. frequency", r.frequency + " minutes"));
+				$("#reading_details div#reading_details_list").append(generateReadingMeta("Created on", r.createdDate));
+				$("#reading_details div#reading_details_list").append(generateReadingMeta("Due date", r.dueDate));
+				$("#reading_details div#reading_details_list").append(generateReadingMeta("Notif. frequency", r.frequency + " minutes"));
 				
-				$("#reading_details > div").append(generateOptionLink("changeDueDate", "Edit due date"));
-				
-				
-				$("#reading_details").fadeIn(300);
+				prepareChangeDueDate(r.id, r.dueDate);
 			});
 		});
 	});
@@ -98,6 +97,37 @@ function generateReadingMeta(key, value) {
 
 function generateOptionLink(id, value) {
 	return '<div class="reading_option"><b></b><span><a href="javascript:void(0)" id="' + id + '">' + value + '</a></span></div>';
+}
+
+function prepareChangeDueDate(id, dueDate) {
+	$("#reading_details div#reading_details_list").append(generateOptionLink("changeDueDate", "Edit due date"));
+	$("#changeDueDate").click(function() {
+		clearAction(function() {
+			$("#reading_action").html("<h5>Edit Due Date</h5>");
+			$("#reading_action").append("<form id=\"editDueDateForm\"><input type='text' id='editDueDateInput' value='" + dueDate +"' /></form>");
+			$("#reading_action").fadeIn(150);
+			
+			$("form#editDueDateForm").submit(function(e) {
+				var newDueDate = $(this).find("input").val();
+				$.post("/reading", {"mode" : "editDueDate", "id" : id, "dueDate" : newDueDate}, function(event) {
+					console.log(event);
+					getReadings();
+				})
+				
+				e.preventDefault();
+				return false;
+			});
+		});
+	});
+	
+	$("#reading_details").fadeIn(300);
+}
+
+function clearAction(callback) {
+	$("#reading_action").fadeOut(150, function() {
+		$("#reading_action").html("");
+		if(callback != null && callback != undefined) { callback.call(document.body); }
+	});
 }
 
 function getTimeDiffDescription(diff, unit, timeDivisor) {

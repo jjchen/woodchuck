@@ -38,7 +38,7 @@ public class TwilioServlet extends HttpServlet {
 		            connection.setRequestMethod("POST");
 		            connection.setRequestProperty("charset", "utf-8");
 		            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		            connection.setRequestProperty("Content-Length", ""+("number="+user.phone+"data=" + message).getBytes().length);
+		            connection.setRequestProperty("Content-Length", ""+("number="+user.phone+"&data=" + message).getBytes().length);
 
 		            DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
 		            writer.writeBytes("number=" + user.phone + "&data=" + message);

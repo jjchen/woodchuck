@@ -143,6 +143,12 @@ public class ReadingServlet extends HttpServlet {
 			Gson gson = new Gson();
 			resp.setContentType("text/plain");
 			resp.getWriter().println(gson.toJson(get(Long.parseLong(req.getParameter("id")))));
+		} else if (req.getParameter("mode").equals("editDueDate") && req.getParameter("id") != null && req.getParameter("dueDate") != null) {
+			Reading reading = get(Long.parseLong(req.getParameter("id")));
+			if(reading != null) {
+				reading.dueDate = new Date(req.getParameter("dueDate"));
+				ofy().save().entity(reading).now();
+			}
 		}
 	}
 	
