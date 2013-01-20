@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, WoodchuckActivity!</string>
+    <string name="app_name">Woodchuck</string>
+    <string name="dynamic_list">All Readings</string>
+    <string name="dynamic_chunk_activity">DynamicChunkActivity</string>
+    <string name="empty">Nothing here!  Sorry!</string>
+
+</resources>
