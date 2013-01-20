@@ -27,6 +27,8 @@ public class TwilioServlet extends HttpServlet {
 				if(reading.currentChunk + 1 < reading.totalChunks) {
 					
 					User user = ofy().load().type(User.class).id(reading.user).get();
+					user.curReading = reading.id;
+					ofy().save().entity(chunk).now();
 					Chunk chunk = reading.getCurrentChunk();
 					if (chunk == null) return;
 					

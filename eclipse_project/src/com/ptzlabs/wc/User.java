@@ -14,8 +14,9 @@ public class User {
 	public @Index long fbid;
 	public String name;
 	public String email;
-	public String phone;
-	
+	public @Index String phone;
+	public Long curReading = 0;
+
 	private User() { }
 	
 	public User(long fbid, String name, String email) {
