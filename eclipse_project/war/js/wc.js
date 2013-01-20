@@ -4,6 +4,7 @@ function getReadings(loadingBox) {
 		$("ul#reading_list").prepend(generateLoadingBox());
 		$("ul#reading_list .loading").fadeIn(200);
 	}
+	$("#reading_details").fadeOut(300);
 	$.ajax({
 		type : "POST",
 		url : "/reading",
@@ -24,10 +25,21 @@ function getReadings(loadingBox) {
 			
 			$("ul#reading_list li").click(function() {
 				var id = parseInt($(this).attr("id").substring(7));
+				var r = readings[id];
+				
 				$("ul#reading_list li").removeClass("active");
 				$(this).addClass("active");
 				
-				$("#reading_details h4").html(readings[id].name);
+				$("#reading_details h4").html(r.name);
+				$("#reading_details div").html("");
+				$("#reading_details > div").append(generateReadingMeta("Created on", r.createdDate));
+				$("#reading_details > div").append(generateReadingMeta("Due date", r.dueDate));
+				$("#reading_details > div").append(generateReadingMeta("Notif. frequency", r.frequency + " minutes"));
+				
+				$("#reading_details > div").append(generateOptionLink("changeDueDate", "Edit due date"));
+				
+				
+				$("#reading_details").fadeIn(300);
 			});
 		});
 	});
@@ -78,6 +90,14 @@ function getTimeDiff(time) {
  
 	return timeDiff;
  
+}
+
+function generateReadingMeta(key, value) {
+	return '<div class="reading_meta"><b>' + key + '</b><span>' + value + '</span></div>';
+}
+
+function generateOptionLink(id, value) {
+	return '<div class="reading_option"><b></b><span><a href="javascript:void(0)" id="' + id + '">' + value + '</a></span></div>';
 }
 
 function getTimeDiffDescription(diff, unit, timeDivisor) {

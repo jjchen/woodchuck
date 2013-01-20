@@ -30,7 +30,7 @@ public class TwilioServlet extends HttpServlet {
 					user.curReading = reading.id;
 					ofy().save().entity(chunk).now();
 					Chunk chunk = reading.getCurrentChunk();
-					if (chunk == null) return;
+					if (chunk == null || user == null) continue;
 					
 					String message = URLEncoder.encode(chunk.data, "UTF-8");
 					
@@ -46,6 +46,7 @@ public class TwilioServlet extends HttpServlet {
 		            writer.writeBytes("number=" + user.phone + "&data=" + message);
 		            writer.flush();
 		            writer.close();
+		            
 		            connection.disconnect();
 		            
 		            resp.setContentType("text/plain");

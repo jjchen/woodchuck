@@ -87,7 +87,7 @@
 					</ul>
 				</div>
 				<div id="right">
-					<div id="reading_details">
+					<div id="reading_details" style="display: none;">
 						<h4></h4>
 						<div></div>
 					</div>
