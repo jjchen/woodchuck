@@ -15,7 +15,7 @@ public class User {
 	public String name;
 	public String email;
 	public @Index String phone;
-	public Long curReading = 0;
+	public Long curReading = (long) 0;
 
 	private User() { }
 	

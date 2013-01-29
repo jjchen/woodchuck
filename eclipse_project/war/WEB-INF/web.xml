@@ -63,6 +63,15 @@
 	    <url-pattern>/twilio</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+  		<servlet-name>TwilioAnswerServlet</servlet-name>
+	    <servlet-class>com.ptzlabs.wc.servlet.TwilioAnsweringServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>TwilioAnswerServlet</servlet-name>
+	    <url-pattern>/twilioAnswer</url-pattern>
+	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>

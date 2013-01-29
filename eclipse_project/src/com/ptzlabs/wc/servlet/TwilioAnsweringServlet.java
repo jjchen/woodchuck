@@ -1,95 +1,116 @@
 package com.ptzlabs.wc.servlet;
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ptzlabs.wc.Chunk;
+import com.ptzlabs.wc.Reading;
+import com.ptzlabs.wc.User;
+
 public class TwilioAnsweringServlet extends HttpServlet {
-    public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String fromNumber = req.getParameter("from");
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String fromNumberBefore = req.getParameter("from");
+		String fromNumber = "";
+		if (fromNumberBefore == null) return;
+		fromNumber = fromNumberBefore.substring(2);
 		
 		List<User> userList = ofy().load().type(User.class).filter("phone", fromNumber).list();
 		User user = userList.get(0);
 
 		String text = req.getParameter("body");
 
-		Reading curReading = readingList.get(0);
 		List<Reading> readingList = ofy().load().type(Reading.class).filter("user", user.id).list();
+		Reading curReading = readingList.get(0);
 		for (Reading reading : readingList) {
 			if (reading.id == user.curReading) {
 				curReading = reading;
 			}
 		}
+		
+		resp.setContentType("text/plain");
 
 		if (text.equals("list readings")) {
 		// list readings
-			String data = ""
+			String data = "";
 			for (Reading reading : readingList) {
 				data = data + "\n " + reading.name;
+				resp.getWriter().write(reading.name);
 			}
-			sendText("number="+fromNumber+"&data="+data);
+			try {
+				String dataEncoded = URLEncoder.encode(data, "UTF-8");
+				sendText(fromNumber, "number="+fromNumber+"&data="+dataEncoded);
+				resp.getWriter().write("sent text");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		} else if (text.equals("highlight")) {
 		// highlight last chunk
-			Chunk chunk = reading.getPreviousChunk();
+			curReading.prevChunk();
+			Chunk chunk = curReading.getCurrentChunk();
+			curReading.nextChunk();
 			chunk.highlight = true;
 			ofy().save().entity(chunk).now();
 		} else if (text.equals("next")) {
 		// get next chunk
-			Chunk chunk = reading.getCurrentChunk();
-			user.curReading = reading.id;
+			Chunk chunk = curReading.getCurrentChunk();
+			user.curReading = curReading.id;
 			ofy().save().entity(user).now();
 			String data = URLEncoder.encode(chunk.data, "UTF-8");
-			sendText("number="+fromNumber+"&data="+data);
-			reading.nextChunk();
-			reading.lastSent = currentDate;
-			ofy().save().entity(reading).now();
+			try {
+				sendText(fromNumber, "number="+fromNumber+"&data="+data);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			curReading.nextChunk();
+			Date currentDate = new Date();
+			curReading.lastSent = currentDate;
+			ofy().save().entity(curReading).now();
 		} else {
 		// insert note
-			Chunk chunk = reading.getPreviousChunk();
+			curReading.prevChunk();
+			Chunk chunk = curReading.getCurrentChunk();
+			curReading.nextChunk();
 			chunk.note = text;
 			ofy().save().entity(chunk).now();
 		}
     }
+    
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    	doPost(req, resp);
+    }
 
-					User user = ofy().load().type(User.class).id(reading.user).get();
-					Chunk chunk = reading.getCurrentChunk();
-					if (chunk == null) return;
+
+    public void sendText(String number, String params) throws Exception {
+
+    	
+		URL url = new URL("http://ptzlabs.com/twilio/send.php");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("charset", "utf-8");
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Content-Length", ""+(params).getBytes().length);
+
+        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
+        writer.writeBytes(params);
+        writer.flush();
+        writer.close();
+        
+        connection.disconnect();
 					
-					String message = URLEncoder.encode(chunk.data, "UTF-8");
-
-"number=" + user.phone + "&data=" + message
-
-					reading.nextChunk();
-					reading.lastSent = currentDate;
-					ofy().save().entity(reading).now();
-
-
-    public void sendText(String params) {
-
-					
-					URL url = new URL("http://ptzlabs.com/twilio/send.php");
-		            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		            connection.setDoOutput(true);
-		            connection.setRequestMethod("POST");
-		            connection.setRequestProperty("charset", "utf-8");
-		            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		            connection.setRequestProperty("Content-Length", ""+("number="+user.phone+"data=" + message).getBytes().length);
-
-		            DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
-		            writer.writeBytes(params);
-		            writer.flush();
-		            writer.close();
-		            connection.disconnect();
-		            
-		            resp.setContentType("text/plain");
-		            resp.getWriter().write("text sent to " + user.phone + ", message: " + message);
-		    
-		            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
-		            } else {
-		                // Server returned HTTP error code.
-		            }
 					
     }
 

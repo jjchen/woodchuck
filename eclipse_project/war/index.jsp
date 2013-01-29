@@ -76,7 +76,7 @@
 			</div>
 			<h2>Start Reading.</h2>
             <p>
-                Who wants to read academic papers? For those of you who are slighlty lazy (no worries, I'm definitely in your boat), here's a sweet app to help guide you in the right direction.  Woodchuck breaks down the text into smaller, more manageable bites and sends it to you via text or Android app. Feel free to login and try it out!
+                Who wants to read academic papers? For those of you who are slightly lazy (no worries, I'm definitely in your boat), here's a sweet app to help guide you in the right direction.  Woodchuck breaks down the text into smaller, more manageable bites and sends it to you via text or Android app. Feel free to login and try it out!
             </p>
 					
 			<div class="clear"></div>

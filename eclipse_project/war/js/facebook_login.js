@@ -5,7 +5,7 @@
  */
 
 // Additional JS functions here
-var fbid = 701479008; 
+var fbid; 
 
 window.fbAsyncInit = function() {
     FB.init({
@@ -31,11 +31,11 @@ window.fbAsyncInit = function() {
 
         } else if (response.status === 'not_authorized') {
             // not_authorized
-        	$("#username").fadein(300);
+        	$("#username").fadeIn(300);
             login();
         } else {
             // not_logged_in
-        	$("#username").fadein(300);
+        	$("#username").fadeIn(300);
             login();
         }
     });
@@ -54,7 +54,13 @@ window.fbAsyncInit = function() {
 function login() {
     FB.login(function(response) {
         if (response.authResponse) {
-            // connected
+        	sendAccessToken(response);
+            fbid = response.authResponse.userID;
+            
+            $("#username").html('<img src="https://graph.facebook.com/'+fbid+'/picture" />');
+            $("#username").fadeIn(300);
+            
+            getReadings();
         } else {
             // cancelled
         }

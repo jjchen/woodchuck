@@ -48,6 +48,25 @@ public class ChunkServlet extends HttpServlet {
 			} else {
 				resp.getWriter().println("Reading ID not valid");
 			}
+		} else if (req.getParameter("mode").equals("nextChunk") && req.getParameter("id") != null && req.getParameter("readingId") != null) {
+			// will mark as read and prints out next chunk.
+			Gson gson = new Gson();
+			resp.setContentType("text/plain");
+			
+			Reading r = getReading(Long.parseLong(req.getParameter("readingId")));
+			int targetChunk = Integer.valueOf(req.getParameter("id")) + 1;
+			if(r != null) {
+				if(targetChunk < r.totalChunks) {
+					resp.getWriter().println(gson.toJson(r.getChunk(targetChunk)));
+					
+					r.currentChunk = targetChunk;
+					ofy().save().entity(r).now();
+				} else {
+					resp.getWriter().println("At the end of reading.");
+				}
+			} else {
+				resp.getWriter().println("Reading ID not valid");
+			}
 		}
 	}
 

@@ -218,7 +218,8 @@ div#username a:hover {
 
 #content #right #reading_action input {
 	border: 1px solid #C7801E;
-	padding: 3px;
+	padding: 6px;
+	width: 200px;
 	font-family: "Helvetica Neue", arial, sans-serif;
 }
 
