@@ -13,4 +13,10 @@
         android:text="@string/hello"
         android:textSize="45dp" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 </LinearLayout>

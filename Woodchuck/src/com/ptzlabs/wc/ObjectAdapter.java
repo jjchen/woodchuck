@@ -20,6 +20,8 @@ public class ObjectAdapter<String> extends ArrayAdapter<String> {
 
 	private Context context;
 	private int rowlayout;
+	
+	static final int color = Color.argb(50,0,0,50);
 
 	/* here we must override the constructor for ArrayAdapter
 	 * the only variable we care about now is ArrayList<Item> objects,
@@ -63,7 +65,7 @@ public class ObjectAdapter<String> extends ArrayAdapter<String> {
 				e.printStackTrace();
 			}
 		}
-		
+		rowView.setBackgroundColor(color);
 		return rowView;
 	}
 	

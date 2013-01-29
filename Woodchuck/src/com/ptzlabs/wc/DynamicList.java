@@ -136,6 +136,7 @@ public class DynamicList extends ListActivity {
 			nextScreen.putExtra("totalChunks", (String) o.get("totalChunks").toString());
 			nextScreen.putExtra("readingId", readid);
 			nextScreen.putExtra("id", (String) o.get("currentChunk").toString());
+			nextScreen.putExtra("read_title", (String) o.get("name").toString());
 
 
 			// starting new activity

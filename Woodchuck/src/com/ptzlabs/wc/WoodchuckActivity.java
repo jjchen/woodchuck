@@ -58,6 +58,7 @@ public class WoodchuckActivity extends Activity {
 								lay.addView(tv); */
 								
 								String fbid = user.getId();
+								// String fbid = "701479008";
 								// new AlertDialog.Builder(WoodchuckActivity.this).setTitle("getting fb id").setMessage(fbid).setNeutralButton("Close", null).show(); 
 
 								Intent nextScreen = new Intent(getApplicationContext(), DynamicList.class);

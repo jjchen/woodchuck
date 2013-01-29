@@ -206,6 +206,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_background_gradient=0x7f02001f;
     }
     public static final class id {
+        public static final int button1=0x7f04001c;
         public static final int com_facebook_login_activity_progress_bar=0x7f040005;
         public static final int com_facebook_picker_activity_circle=0x7f040004;
         public static final int com_facebook_picker_checkbox=0x7f040007;

@@ -57,6 +57,9 @@ public class DynamicChunkActivity extends Activity implements SimpleGestureListe
 				tv.setTextSize(20);
 				tv.setPadding(10, 20, 10, 20);
 				lay.addView(tv);
+				
+				
+				(DynamicChunkActivity.this).setTitle((CharSequence) read_title);
 
 
 			} catch (ParseException e) {
@@ -80,6 +83,7 @@ public class DynamicChunkActivity extends Activity implements SimpleGestureListe
 	private String readingId;
 	private String id;
 	private String totalChunks;
+	String read_title;
 
 	private int group1Id = 1;
 
@@ -96,6 +100,7 @@ public class DynamicChunkActivity extends Activity implements SimpleGestureListe
 		readingId = i.getStringExtra("readingId");
 		id = i.getStringExtra("id");
 		totalChunks = i.getStringExtra("totalChunks");
+		read_title = i.getStringExtra("read_title");
 
 		Log.d("readingId", readingId);
 		Log.d("id", id);
